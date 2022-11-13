@@ -12,16 +12,49 @@ router.get('/', function(req, res, next) {
         productList = req.session.productList;
     }
 
-    /**
-    Determine if valid customer id was entered
-    Determine if there are products in the shopping cart
-    If either are not true, display an error message
-    **/
+    // determine if there are products in the shopping cart
+    if (productList.length === 0) {
+        res.write('<h1>Your shopping cart is empty!</h1>');
+    }
+
+    let customerId = false;
+    if (req.query.customerId) customerId = req.query.customerId;
+
+    function isPositiveInteger(str) {
+        if (typeof str !== 'string') {
+            return false;
+        }
+        const num = Number(str);
+        return Number.isInteger(num) && num > 0;
+    }
+
+    async function idInDatabase() {
+        try {
+            let pool = await sql.connect(dbConfig);
+            let sqlQuery = "SELECT customer.firstName, customer.lastName FROM customer WHERE customer.customerId = @customerId";
+            let result = await pool.request().input('customerId', sql.Int(), customerId).query(sqlQuery);
+            return result.recordset.length !== 0;
+        } catch (err) {
+            console.dir(err);
+            res.write(JSON.stringify(err));
+            res.end();
+        }
+    }
+
+    // determine if a valid customer id was entered
+    (async () => {
+        if (isPositiveInteger(customerId) && await idInDatabase()) {
+            res.write('<h1>Valid!</h1>')
+            res.end();
+        } else {
+            res.write('<h1>Invalid customer id. Go back to the previous page and try again.</h1>')
+            res.end();
+        }
+    })()
 
     /** Make connection and validate **/
 
     /** Save order information to database**/
-
 
         /**
         // Use retrieval of auto-generated keys.
@@ -52,8 +85,6 @@ router.get('/', function(req, res, next) {
     /** Print out order summary **/
 
     /** Clear session/cart **/
-
-    res.end();
 });
 
 module.exports = router;
