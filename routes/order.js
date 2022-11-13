@@ -5,7 +5,7 @@ const moment = require('moment');
 
 router.get('/', function(req, res, next) {
     res.setHeader('Content-Type', 'text/html');
-    res.write("<title>YOUR NAME Grocery Order Processing</title>");
+    res.write("<title>Only Ducks Grocery Order Processing</title>");
 
     let productList = false;
     if (req.session.productList && req.session.productList.length > 0) {

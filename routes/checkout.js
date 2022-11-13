@@ -3,7 +3,7 @@ const router = express.Router();
 
 router.get('/', function(req, res, next) {
     res.setHeader('Content-Type', 'text/html');
-    res.write("<title>Grocery CheckOut Line</title>");
+    res.write("<title>Only Ducks CheckOut Line</title>");
 
     res.write("<h1>Enter your customer id to complete the transaction:</h1>");
 
