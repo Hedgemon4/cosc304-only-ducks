@@ -3,9 +3,9 @@ const router = express.Router();
 const sql = require('mssql');
 const moment = require('moment');
 
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'text/html');
-    res.write("<title>YOUR NAME Grocery Order Processing</title>");
+    res.write("<title>Only Ducks Grocery Order Processing</title>");
 
     let productList = false;
     if (req.session.productList && req.session.productList.length > 0) {
@@ -28,11 +28,14 @@ router.get('/', function(req, res, next) {
         return Number.isInteger(num) && num > 0;
     }
 
+    let shippingTo;
+
     async function idInDatabase() {
         try {
             let pool = await sql.connect(dbConfig);
             let sqlQuery = "SELECT customer.firstName, customer.lastName FROM customer WHERE customer.customerId = @customerId";
             let result = await pool.request().input('customerId', sql.Int(), customerId).query(sqlQuery);
+            if (result.recordset.length !== 0) shippingTo = result.recordset[0].firstName + ' ' + result.recordset[0].lastName;
             return result.recordset.length !== 0;
         } catch (err) {
             console.dir(err);
@@ -44,7 +47,34 @@ router.get('/', function(req, res, next) {
     // determine if a valid customer id was entered
     (async () => {
         if (isPositiveInteger(customerId) && await idInDatabase()) {
-            res.write('<h1>Valid!</h1>')
+            res.write('<h1>Your Order Summary</h1>');
+            res.write("<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>");
+            res.write("<th>Price</th><th>Subtotal</th></tr>");
+            let total = 0;
+            for (let i = 0; i < productList.length; i++) {
+                product = productList[i];
+                if (!product) {
+                    continue
+                }
+
+                res.write("<tr><td>" + product.id + "</td>");
+                res.write("<td>" + product.name + "</td>");
+
+                res.write("<td align=\"center\">" + product.quantity + "</td>");
+
+                res.write("<td align=\"right\">$" + Number(product.price).toFixed(2) + "</td>");
+                res.write("<td align=\"right\">$" + (Number(product.quantity.toFixed(2)) * Number(product.price)).toFixed(2) + "</td></tr>");
+                res.write("</tr>");
+                total = total + product.quantity * product.price;
+            }
+            res.write("<tr><td colspan=\"4\" align=\"right\"><b>Order Total</b></td><td align=\"right\">$" + total.toFixed(2) + "</td></tr>");
+            res.write("</table>");
+
+            // TODO: need to call function to insert order into DB
+
+            res.write('<h1>Order completed. Will be shipped soon...</h1>');
+            res.write('<h1>Your order reference number is: </h1>');
+            res.write('<h1>Shipping to customer: ' + customerId + ' Name: ' + shippingTo + '</h1>');
             res.end();
         } else {
             res.write('<h1>Invalid customer id. Go back to the previous page and try again.</h1>')
@@ -71,18 +101,6 @@ router.get('/', function(req, res, next) {
     /** Update total amount for order record **/
 
     /** For each entry in the productList is an array with key values: id, name, quantity, price **/
-
-    /**
-        for (let i = 0; i < productList.length; i++) {
-            let product = products[i];
-            if (!product) {
-                continue;
-            }
-            // Use product.id, product.name, product.quantity, and product.price here
-        }
-    **/
-
-    /** Print out order summary **/
 
     /** Clear session/cart **/
 });
