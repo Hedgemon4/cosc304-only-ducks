@@ -44,50 +44,24 @@ router.get('/', function (req, res, next) {
         }
     }
 
-    // (async () => {
-    //     if (isPositiveInteger(customerId) && await idInDatabase()) {
-    //         let orderTotal = 0
-    //         for(let i = 0; i < productList.length; i++){
-    //             product = productList[i];
-    //             if (!product) {
-    //                 continue
-    //             }
-    //             orderTotal = orderTotal + product.quantity * product.price
-    //         }
-    //         sqlQuery = "INSERT INTO ordersummary(customerId, orderDate, totalAmount) OUTPUT INSERTED.orderId VALUES(@custId, @date, @total)"
-    //         let pool = await sql.connect(dbConfig);
-    //         const ps = new sql.PreparedStatement(pool)
-    //         ps.input('custId', sql.Int)
-    //         ps.input('date', sql.DATETIME)
-    //         ps.input('total', sql.DECIMAL(10,2))
-    //         ps.prepare(sqlQuery)
-    //
-    //         let result = ps.execute({custId: customerId, date: new Date(), total: 0})
-    //
-    //         console.log(result.recordset[0].orderId)
-    //
-    //         ps.unprepare()
-    //     }
-    // })()
-
     // determine if a valid customer id was entered
     (async () => {
         if (isPositiveInteger(customerId) && await idInDatabase()) {
-            sqlQuery = "INSERT INTO ordersummary (customerId, orderDate, totalAmount) OUTPUT INSERTED.orderId VALUES(@custId, @date, @total)"
+            let sqlQuery = "INSERT INTO ordersummary (customerId, orderDate, totalAmount) OUTPUT INSERTED.orderId VALUES(@custId, @date, @total)"
             let pool = await sql.connect(dbConfig);
-            const ps = new sql.PreparedStatement(pool)
+            const ps1 = new sql.PreparedStatement(pool)
 
-            ps.input('custId', sql.Int)
-            ps.input('date', sql.DATETIME)
-            ps.input('total', sql.DECIMAL(10,2))
+            ps1.input('custId', sql.Int)
+            ps1.input('date', sql.DATETIME)
+            ps1.input('total', sql.DECIMAL(10,2))
 
-            await ps.prepare(sqlQuery)
+            await ps1.prepare(sqlQuery)
 
-            let result = await ps.execute({custId: customerId, date: new Date(), total: 0})
+            let result = await ps1.execute({custId: customerId, date: new Date(), total: 0})
 
             let orderId = result.recordset[0].orderId
 
-            ps.unprepare()
+            ps1.unprepare()
 
             res.write('<h1>Your Order Summary</h1>');
             res.write("<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>");
@@ -95,12 +69,24 @@ router.get('/', function (req, res, next) {
 
             // TODO: need to call function to insert order summary into DB
 
+            const ps2 = new sql.PreparedStatement(pool)
+            sqlQuery = "INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, @productId, @quantity, @price)"
+
+            ps2.input('orderId', sql.Int)
+            ps2.input('productId', sql.Int)
+            ps2.input('quantity', sql.Int)
+            ps2.input('price', sql.DECIMAL(10,2))
+
+            await ps2.prepare(sqlQuery)
+
             let total = 0;
             for (let i = 0; i < productList.length; i++) {
-                product = productList[i];
+                let product = productList[i];
                 if (!product) {
                     continue
                 }
+
+                await ps2.execute({orderId: orderId, productId: product.id, quantity: product.quantity, price: product.price})
 
                 // TODO: need to call function to insert orderproduct into DB
 
@@ -114,6 +100,21 @@ router.get('/', function (req, res, next) {
                 res.write("</tr>");
                 total = total + product.quantity * product.price;
             }
+
+            ps2.unprepare()
+
+            const ps3 = new sql.PreparedStatement(pool)
+            sqlQuery = "UPDATE ordersummary SET totalAmount = @total WHERE orderId = @orderId"
+
+            ps3.input('total', sql.DECIMAL(10,2))
+            ps3.input('orderId', sql.Int)
+
+            await ps3.prepare(sqlQuery)
+
+            await ps3.execute({total: total, orderId: orderId})
+
+            ps3.unprepare()
+
             res.write("<tr><td colspan=\"4\" align=\"right\"><b>Order Total</b></td><td align=\"right\">$" + total.toFixed(2) + "</td></tr>");
             res.write("</table>");
             res.write('<h1>Order completed. Will be shipped soon...</h1>');
@@ -151,3 +152,5 @@ router.get('/', function (req, res, next) {
 
 
 module.exports = router;
+
+// We did it Joe
