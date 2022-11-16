@@ -52,7 +52,6 @@ router.get('/', function (req, res, next) {
             res.write("<th>Price</th><th>Subtotal</th></tr>");
 
             // TODO: need to call function to insert ordersummary into DB
-            insertIntoOrdersummary()
 
             let total = 0;
             for (let i = 0; i < productList.length; i++) {
@@ -62,7 +61,6 @@ router.get('/', function (req, res, next) {
                 }
 
                 // TODO: need to call function to insert orderproduct into DB
-                insertIntoOrderproduct(product.id, product.quantity, Number(product.price).toFixed(2));
 
                 res.write("<tr><td>" + product.id + "</td>");
                 res.write("<td>" + product.name + "</td>");
