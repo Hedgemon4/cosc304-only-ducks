@@ -44,14 +44,56 @@ router.get('/', function (req, res, next) {
         }
     }
 
+    // (async () => {
+    //     if (isPositiveInteger(customerId) && await idInDatabase()) {
+    //         let orderTotal = 0
+    //         for(let i = 0; i < productList.length; i++){
+    //             product = productList[i];
+    //             if (!product) {
+    //                 continue
+    //             }
+    //             orderTotal = orderTotal + product.quantity * product.price
+    //         }
+    //         sqlQuery = "INSERT INTO ordersummary(customerId, orderDate, totalAmount) OUTPUT INSERTED.orderId VALUES(@custId, @date, @total)"
+    //         let pool = await sql.connect(dbConfig);
+    //         const ps = new sql.PreparedStatement(pool)
+    //         ps.input('custId', sql.Int)
+    //         ps.input('date', sql.DATETIME)
+    //         ps.input('total', sql.DECIMAL(10,2))
+    //         ps.prepare(sqlQuery)
+    //
+    //         let result = ps.execute({custId: customerId, date: new Date(), total: 0})
+    //
+    //         console.log(result.recordset[0].orderId)
+    //
+    //         ps.unprepare()
+    //     }
+    // })()
+
     // determine if a valid customer id was entered
     (async () => {
         if (isPositiveInteger(customerId) && await idInDatabase()) {
+            sqlQuery = "INSERT INTO ordersummary (customerId, orderDate, totalAmount) OUTPUT INSERTED.orderId VALUES(@custId, @date, @total)"
+            let pool = await sql.connect(dbConfig);
+            const ps = new sql.PreparedStatement(pool)
+
+            ps.input('custId', sql.Int)
+            ps.input('date', sql.DATETIME)
+            ps.input('total', sql.DECIMAL(10,2))
+
+            await ps.prepare(sqlQuery)
+
+            let result = await ps.execute({custId: customerId, date: new Date(), total: 0})
+
+            let orderId = result.recordset[0].orderId
+
+            ps.unprepare()
+
             res.write('<h1>Your Order Summary</h1>');
             res.write("<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>");
             res.write("<th>Price</th><th>Subtotal</th></tr>");
 
-            // TODO: need to call function to insert ordersummary into DB
+            // TODO: need to call function to insert order summary into DB
 
             let total = 0;
             for (let i = 0; i < productList.length; i++) {
@@ -106,5 +148,6 @@ router.get('/', function (req, res, next) {
 
     /** Clear session/cart **/
 });
+
 
 module.exports = router;
