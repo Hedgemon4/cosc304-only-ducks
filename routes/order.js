@@ -50,12 +50,19 @@ router.get('/', function (req, res, next) {
             res.write('<h1>Your Order Summary</h1>');
             res.write("<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>");
             res.write("<th>Price</th><th>Subtotal</th></tr>");
+
+            // TODO: need to call function to insert ordersummary into DB
+            insertIntoOrdersummary()
+
             let total = 0;
             for (let i = 0; i < productList.length; i++) {
                 product = productList[i];
                 if (!product) {
                     continue
                 }
+
+                // TODO: need to call function to insert orderproduct into DB
+                insertIntoOrderproduct(product.id, product.quantity, Number(product.price).toFixed(2));
 
                 res.write("<tr><td>" + product.id + "</td>");
                 res.write("<td>" + product.name + "</td>");
@@ -69,9 +76,6 @@ router.get('/', function (req, res, next) {
             }
             res.write("<tr><td colspan=\"4\" align=\"right\"><b>Order Total</b></td><td align=\"right\">$" + total.toFixed(2) + "</td></tr>");
             res.write("</table>");
-
-            // TODO: need to call function to insert order into DB
-
             res.write('<h1>Order completed. Will be shipped soon...</h1>');
             res.write('<h1>Your order reference number is: </h1>');
             res.write('<h1>Shipping to customer: ' + customerId + ' Name: ' + shippingTo + '</h1>');
