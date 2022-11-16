@@ -53,6 +53,8 @@ app.use('/showcart', showCart);
 app.use('/checkout', checkout);
 app.use('/order', order);
 
+app.use(express.static(__dirname + '/public'));
+
 // Rendering the main page
 app.get('/', function (req, res) {
   res.render('index', {
