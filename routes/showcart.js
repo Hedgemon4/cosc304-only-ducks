@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
     let productList = false;
     res.setHeader('Content-Type', 'text/html');
     res.write("<title>Your Shopping Cart</title>");
@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
             res.write("<td align=\"center\">" + product.quantity + "</td>");
 
             res.write("<td align=\"right\">$" + Number(product.price).toFixed(2) + "</td>");
-            res.write("<td align=\"right\">$" + (Number(product.quantity.toFixed(2)) * Number(product.price)).toFixed(2) + "</td></tr>");
+            res.write("<td align=\"right\">$" + (Number(product.quantity.toFixed(2)) * Number(product.price)).toFixed(2) + "</td><td>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"deleteprod?id=" + product.id + "\">Remove Item from Cart</a></td></tr>");
             res.write("</tr>");
             total = total + product.quantity * product.price;
         }
@@ -32,7 +32,7 @@ router.get('/', function(req, res, next) {
         res.write("</table>");
 
         res.write("<h2><a href=\"checkout\">Check Out</a></h2>");
-    } else{
+    } else {
         res.write("<h1>Your shopping cart is empty!</h1>");
     }
     res.write('<h2><a href="listprod">Continue Shopping</a></h2>');
