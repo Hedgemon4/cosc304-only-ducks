@@ -3,7 +3,7 @@ const router = express.Router();
 const sql = require('mssql');
 const moment = require('moment');
 
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'text/html');
     res.write("<title>Only Ducks Grocery Order Processing</title>");
 
@@ -12,16 +12,81 @@ router.get('/', function(req, res, next) {
         productList = req.session.productList;
     }
 
-    /**
-    Determine if valid customer id was entered
-    Determine if there are products in the shopping cart
-    If either are not true, display an error message
-    **/
+    // determine if there are products in the shopping cart
+    if (productList.length === 0) {
+        res.write('<h1>Your shopping cart is empty!</h1>');
+    }
+
+    let customerId = false;
+    if (req.query.customerId) customerId = req.query.customerId;
+
+    function isPositiveInteger(str) {
+        if (typeof str !== 'string') {
+            return false;
+        }
+        const num = Number(str);
+        return Number.isInteger(num) && num > 0;
+    }
+
+    let shippingTo;
+
+    async function idInDatabase() {
+        try {
+            let pool = await sql.connect(dbConfig);
+            let sqlQuery = "SELECT customer.firstName, customer.lastName FROM customer WHERE customer.customerId = @customerId";
+            let result = await pool.request().input('customerId', sql.Int(), customerId).query(sqlQuery);
+            if (result.recordset.length !== 0) shippingTo = result.recordset[0].firstName + ' ' + result.recordset[0].lastName;
+            return result.recordset.length !== 0;
+        } catch (err) {
+            console.dir(err);
+            res.write(JSON.stringify(err));
+            res.end();
+        }
+    }
+
+    // determine if a valid customer id was entered
+    (async () => {
+        if (isPositiveInteger(customerId) && await idInDatabase()) {
+            res.write('<h1>Your Order Summary</h1>');
+            res.write("<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>");
+            res.write("<th>Price</th><th>Subtotal</th></tr>");
+
+            // TODO: need to call function to insert ordersummary into DB
+
+            let total = 0;
+            for (let i = 0; i < productList.length; i++) {
+                product = productList[i];
+                if (!product) {
+                    continue
+                }
+
+                // TODO: need to call function to insert orderproduct into DB
+
+                res.write("<tr><td>" + product.id + "</td>");
+                res.write("<td>" + product.name + "</td>");
+
+                res.write("<td align=\"center\">" + product.quantity + "</td>");
+
+                res.write("<td align=\"right\">$" + Number(product.price).toFixed(2) + "</td>");
+                res.write("<td align=\"right\">$" + (Number(product.quantity.toFixed(2)) * Number(product.price)).toFixed(2) + "</td></tr>");
+                res.write("</tr>");
+                total = total + product.quantity * product.price;
+            }
+            res.write("<tr><td colspan=\"4\" align=\"right\"><b>Order Total</b></td><td align=\"right\">$" + total.toFixed(2) + "</td></tr>");
+            res.write("</table>");
+            res.write('<h1>Order completed. Will be shipped soon...</h1>');
+            res.write('<h1>Your order reference number is: </h1>');
+            res.write('<h1>Shipping to customer: ' + customerId + ' Name: ' + shippingTo + '</h1>');
+            res.end();
+        } else {
+            res.write('<h1>Invalid customer id. Go back to the previous page and try again.</h1>')
+            res.end();
+        }
+    })()
 
     /** Make connection and validate **/
 
     /** Save order information to database**/
-
 
         /**
         // Use retrieval of auto-generated keys.
@@ -39,21 +104,7 @@ router.get('/', function(req, res, next) {
 
     /** For each entry in the productList is an array with key values: id, name, quantity, price **/
 
-    /**
-        for (let i = 0; i < productList.length; i++) {
-            let product = products[i];
-            if (!product) {
-                continue;
-            }
-            // Use product.id, product.name, product.quantity, and product.price here
-        }
-    **/
-
-    /** Print out order summary **/
-
     /** Clear session/cart **/
-
-    res.end();
 });
 
 module.exports = router;
