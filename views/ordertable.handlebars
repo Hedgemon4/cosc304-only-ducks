@@ -1,0 +1,29 @@
+<h1>Your Shopping Cart</h1>
+
+{{#if product}}
+    <table>
+        <tr>
+            <th>Product Id</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+        </tr>
+        {{#each product}}
+            {{#if this}}
+                <tr>
+                    <td>{{this.id}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.quantity}}</td>
+                    <td>${{this.price}}</td>
+                    <td>${{subtotal this.price this.quantity}}</td>
+                </tr>
+            {{/if}}
+        {{/each}}
+        <tr><td colspan=\"4\" align=\"right\"><b>Order Total</b></td><td align=\"right\">${{ordertotal product}}</td></tr>
+    </table>
+    <h2><a href="checkout">Check Out</a></h2>
+{{else}}
+    <h1>Your shopping cart is empty!</h1>
+{{/if}}
+<h2><a href="listprod">Continue Shopping</a></h2>
