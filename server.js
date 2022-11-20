@@ -9,7 +9,6 @@ let addCart = require('./routes/addcart');
 let showCart = require('./routes/showcart');
 let checkout = require('./routes/checkout');
 let order = require('./routes/order');
-let deleteprod = require('./routes/deleteprod')
 
 const app = express();
 
@@ -53,7 +52,6 @@ app.use('/addcart', addCart);
 app.use('/showcart', showCart);
 app.use('/checkout', checkout);
 app.use('/order', order);
-app.use('/deleteprod', deleteprod);
 
 app.use(express.static(__dirname + '/public'));
 

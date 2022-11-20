@@ -1,10 +1,31 @@
 const express = require('express');
+require("mssql");
 const router = express.Router();
 
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res) {
     let productList = false;
     res.setHeader('Content-Type', 'text/html');
     res.write("<title>Your Shopping Cart</title>");
+
+    let idForDeletion = false;
+    let product;
+    if (req.query.delete) {
+        idForDeletion = req.query.delete;
+        if (req.session.productList) {
+            productList = req.session.productList;
+            for (let i = 0; i < productList.length; i++) {
+                product = productList[i];
+                if (!product) {
+                    continue
+                }
+                if (product.id === idForDeletion) {
+                    console.log("Deleting this product: " + idForDeletion);
+                    productList.splice(i, 1);
+                }
+            }
+        }
+    }
+
     if (req.session.productList) {
         productList = req.session.productList;
         res.write("<h1>Your Shopping Cart</h1>");
@@ -24,7 +45,7 @@ router.get('/', function (req, res, next) {
             res.write("<td align=\"center\">" + product.quantity + "</td>");
 
             res.write("<td align=\"right\">$" + Number(product.price).toFixed(2) + "</td>");
-            res.write("<td align=\"right\">$" + (Number(product.quantity.toFixed(2)) * Number(product.price)).toFixed(2) + "</td><td>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"deleteprod?id=" + product.id + "\">Remove Item from Cart</a></td></tr>");
+            res.write("<td align=\"right\">$" + (Number(product.quantity.toFixed(2)) * Number(product.price)).toFixed(2) + "</td><td>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"showcart?delete=" + product.id + "\">Remove Item from Cart</a></td></tr>");
             res.write("</tr>");
             total = total + product.quantity * product.price;
         }
