@@ -58,15 +58,31 @@ app.use(express.static(__dirname + '/public'));
 // Handlebar helpers
 let hbs = exphbs.create({});
 
+hbs.handlebars.registerHelper('subtotal', function (price, quantity) {
+    return (Number(quantity.toFixed(2)) * Number(price)).toFixed(2)
+})
+
+hbs.handlebars.registerHelper('ordertotal', function (productList) {
+    let total = 0
+    for (let i = 0; i < productList.length; i++) {
+        let product = productList[i]
+        if (!product) {
+            continue
+        }
+        total = total + product.quantity * product.price
+    }
+    return total.toFixed(2)
+})
+
 hbs.handlebars.registerHelper('displaymoney', function(number){
   return Number(number).toFixed(2)
 })
 
 // Rendering the main page
 app.get('/', function (req, res) {
-  res.render('index', {
-    title: "Only Ducks Grocery Main Page"
-  });
+    res.render('index', {
+        title: "Only Ducks Grocery Main Page"
+    });
 })
 
 // Starting our Express app
