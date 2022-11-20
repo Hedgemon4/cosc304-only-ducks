@@ -9,15 +9,28 @@
     <link rel="stylesheet" type="text/css" href="/css/homepage.css">
     <title>Homepage</title>
 </head>
-<body>
 
-<nav class="navbar navbar-dark bg-primary">
+
+<nav class="navbar navbar-expand-lg"  style="background-color: #e55701;">
     <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">Only Ducks</span>
+        <span class="navbar-brand mb-0 h1" style="color: #fff780">OnlyDucks</span>
+        <div class="nav-item dropstart">
+            <a class="nav-link dropdown-toggle" href="#" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false" style="color: #fff780">
+                Pages
+            </a>
+            <ul class="dropdown-menu" style="background-color: #fdffc5">
+                <li><a class="dropdown-item" href="">Home</a></li>
+                <li><a class="dropdown-item" href="/listprod">Shop</a></li>
+                <li><a class="dropdown-item" href="/listorder">Orders</a></li>
+                <li><a class="dropdown-item" href="/showcart">Cart</a></li>
+            </ul>
+        </div>
     </div>
 </nav>
+<body style="color: #e55701; background-color: #fff780;">
 
-<h3 class="flex-header">It's in the name</h3>
+<img src="images/onlyDucksLogo.png" class="img-fluid" alt="Bootstrap">
 
 <div class="flex-container">
 
@@ -26,7 +39,7 @@
         <div class="card-body">
             <h5 class="card-title">Browse the shop</h5>
             <p class="card-text">Click here to browse the shop.</p>
-            <a href="/listprod" class="btn btn-primary">Begin Shopping</a>
+            <a href="/listprod" class="btn button-coloured">Begin Shopping</a>
         </div>
     </div>
 
@@ -35,7 +48,7 @@
         <div class="card-body">
             <h5 class="card-title">Browse orders</h5>
             <p class="card-text">Click here to view all orders.</p>
-            <a href="/listorder" class="btn btn-primary">List Orders</a>
+            <a href="/listorder" class="btn button-coloured">List Orders</a>
         </div>
     </div>
 

@@ -5,7 +5,7 @@ require('moment');
 
 router.get('/', function (req, res) {
     res.setHeader('Content-Type', 'text/html');
-    res.write('<title>Only Ducks Order List</title>');
+    res.write('<title>OnlyDucks Order List</title>');
     res.write('<h1>Order List</h1>');
     // table, th, td { border: 1px solid; border-collapse: collapse; } table { width: 70%; }
     res.write('<style></style>');
