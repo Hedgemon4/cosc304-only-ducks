@@ -5,12 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/homepage.css">
     <title>{{title}}</title>
 </head>
 <body>
-<nav class="navbar navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg" style="background-color: #e55701;">
     <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">Only Ducks</span>
+        <span class="navbar-brand mb-0 h1" style="color: #fff780">OnlyDucks</span>
+        <div class="nav-item dropstart">
+            <a class="nav-link dropdown-toggle" href="#" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false" style="color: #fff780">
+                Pages
+            </a>
+            <ul class="dropdown-menu" style="background-color: #fdffc5">
+                <li><a class="dropdown-item" href="">Home</a></li>
+                <li><a class="dropdown-item" href="/listprod">Shop</a></li>
+                <li><a class="dropdown-item" href="/listorder">Orders</a></li>
+                <li><a class="dropdown-item" href="/showcart">Cart</a></li>
+            </ul>
+        </div>
     </div>
 </nav>
 {{{body}}}
