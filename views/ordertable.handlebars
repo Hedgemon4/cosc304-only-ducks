@@ -23,6 +23,8 @@
                     <td><input type=button onclick='function updateQuantity() {
                             console.log("Product clicked: " + {{this.id}} + " " + document.getElementById("newqty").value);
                             }
+                            this.quantity = document.getElementById("newqty").value;
+                            {{updateQuanity ../ this.id quantity}}
                             updateQuantity()' value='Update Quantity'></td>
                 </tr>
             {{/if}}

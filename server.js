@@ -74,6 +74,15 @@ hbs.handlebars.registerHelper('ordertotal', function (productList) {
     return total.toFixed(2)
 })
 
+hbs.handlebars.registerHelper('updateQuanity', function(productList, productID, quantity){
+    for(let i = 0; i < productList.length; i++){
+        let product = productList[i]
+        if(product.productId == productID){
+            product.quantity = quantity
+        }
+    }
+})
+
 // Rendering the main page
 app.get('/', function (req, res) {
     res.render('index', {
