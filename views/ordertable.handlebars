@@ -14,14 +14,23 @@
                 <tr>
                     <td>{{this.id}}</td>
                     <td>{{this.name}}</td>
-                    <td>{{this.quantity}}</td>
+                    <td><label>
+                        <input type='text' id='newqty' size='3' value={{this.quantity}}>
+                    </label></td>
                     <td>${{this.price}}</td>
                     <td>${{subtotal this.price this.quantity}}</td>
                     <td><a href='\showcart?delete={{this.id}}'>Remove Item from Cart</a></td>
+                    <td><input type=button onclick='function updateQuantity() {
+                            console.log("Product clicked: " + {{this.id}} + " " + document.getElementById("newqty").value);
+                            }
+                            updateQuantity()' value='Update Quantity'></td>
                 </tr>
             {{/if}}
         {{/each}}
-        <tr><td colspan=\"4\" align=\"right\"><b>Order Total</b></td><td align=\"right\">${{ordertotal product}}</td></tr>
+        <tr>
+            <td colspan=\"4\" align=\"right\"><b>Order Total</b></td>
+            <td align=\"right\">${{ordertotal product}}</td>
+        </tr>
     </table>
     <h2><a href="checkout">Check Out</a></h2>
 {{else}}
