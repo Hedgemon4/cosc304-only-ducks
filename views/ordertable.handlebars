@@ -17,6 +17,7 @@
                     <td>{{this.quantity}}</td>
                     <td>${{this.price}}</td>
                     <td>${{subtotal this.price this.quantity}}</td>
+                    <td><a href='\showcart?delete={{this.id}}'>Remove Item from Cart</a></td>
                 </tr>
             {{/if}}
         {{/each}}
