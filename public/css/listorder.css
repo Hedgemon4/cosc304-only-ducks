@@ -1,0 +1,12 @@
+.ordertitle {
+  margin: 1rem;
+}
+
+.flex-container{
+  display: flex;
+  max-width: 80%;
+}
+
+.table-stuff{
+  margin: 1rem;
+}
