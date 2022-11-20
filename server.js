@@ -55,6 +55,13 @@ app.use('/order', order);
 
 app.use(express.static(__dirname + '/public'));
 
+// Handlebar helpers
+let hbs = exphbs.create({});
+
+hbs.handlebars.registerHelper('displaymoney', function(number){
+  return Number(number).toFixed(2)
+})
+
 // Rendering the main page
 app.get('/', function (req, res) {
   res.render('index', {
