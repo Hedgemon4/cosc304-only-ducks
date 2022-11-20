@@ -14,28 +14,28 @@ const app = express();
 
 // This DB Config is accessible globally
 dbConfig = {
-  user: 'SA',
-  password: 'YourStrong@Passw0rd',
-  server: 'db',
-  database: 'tempdb',
-  options: {
-    'enableArithAbort': true,
-    'encrypt': false,
-  }
+    user: 'SA',
+    password: 'YourStrong@Passw0rd',
+    server: 'db',
+    database: 'tempdb',
+    options: {
+        'enableArithAbort': true,
+        'encrypt': false,
+    }
 }
 
 // Setting up the session.
 // This uses MemoryStorage which is not
 // recommended for production use.
 app.use(session({
-  secret: 'COSC 304 Rules!',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: false,
-    secure: false,
-    maxAge: 60000,
-  }
+    secret: 'COSC 304 Rules!',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: false,
+        secure: false,
+        maxAge: 60000,
+    }
 }))
 
 // Setting up the rendering engine
@@ -74,8 +74,8 @@ hbs.handlebars.registerHelper('ordertotal', function (productList) {
     return total.toFixed(2)
 })
 
-hbs.handlebars.registerHelper('displaymoney', function(number){
-  return Number(number).toFixed(2)
+hbs.handlebars.registerHelper('displaymoney', function (number) {
+    return Number(number).toFixed(2)
 })
 
 // Rendering the main page
