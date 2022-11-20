@@ -74,6 +74,10 @@ hbs.handlebars.registerHelper('ordertotal', function (productList) {
     return total.toFixed(2)
 })
 
+hbs.handlebars.registerHelper('displaymoney', function (number) {
+    return Number(number).toFixed(2)
+})
+
 hbs.handlebars.registerHelper('updateQuanity', function(productList, productID, quantity){
     for(let i = 0; i < productList.length; i++){
         let product = productList[i]
