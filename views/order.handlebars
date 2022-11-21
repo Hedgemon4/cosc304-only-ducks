@@ -1,0 +1,41 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/order.css">
+</head>
+<body>
+{{#if products}}
+    {{#if validId}}
+        <h1 class="space">Your Order Summary</h1>
+        <table class="table space">
+            <tr>
+                <th scope="col">Product Id</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Subtotal</th>
+            </tr>
+            {{#each products}}
+                {{#if this}}
+                <tr>
+                    <td>{{this.id}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.quantity}}</td>
+                    <td>${{displaymoney this.price}}</td>
+                    <td>${{subtotal this.price this.quantity}}</td>
+                </tr>
+                {{/if}}
+            {{/each}}
+            <tr>
+                <td><b>Order Total</b></td>
+                <td>${{ordertotal products}}</td>
+            </tr>
+        </table>
+        <h1 class="space">Order completed. Will be shipped soon...</h1>
+        <h1 class="space">Your order reference number is: {{orderId}}</h1>
+        <h1 class="space">Shipping to customer: {{customerId}} Name: {{customerName}}</h1>
+    {{else}}
+        <h1 class="space">Invalid customer id. Go back to the previous page and try again.</h1>
+    {{/if}}
+{{else}}
+    <h1 class="space">Your shopping cart is empty!</h1>
+{{/if}}
+</body>
