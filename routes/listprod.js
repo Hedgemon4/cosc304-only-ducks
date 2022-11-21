@@ -4,7 +4,7 @@ const sql = require('mssql');
 
 router.get('/', function (req, res) {
     res.setHeader('Content-Type', 'text/html');
-    res.write("<title>Only Ducks</title>");
+    res.write("<title>OnlyDucks</title>");
     res.write('<h1>Search for the products you want to buy:</h1>');
     res.write('<form method="get" action="/listprod">');
     res.write('<input type="text" name="productName" size="50">');
