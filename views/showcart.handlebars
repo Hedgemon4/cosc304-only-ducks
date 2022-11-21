@@ -1,7 +1,13 @@
 <h1>Your Shopping Cart</h1>
+<script>
+    function update(newid, newqty)
+    {
+        window.location="showcart?update="+newid+"&newqty="+newqty;
+    }
+</script>
 
 {{#if product}}
-    <form action="/addcart/updateQuantity" method="get">
+    <form name="form1">
         <table>
             <tr>
                 <th>Product Id</th>
@@ -16,12 +22,11 @@
                         <td>{{this.id}}</td>
                         <td>{{this.name}}</td>
                         <td><label>
-                            <input type='text' id='newqty' size='3' value={{this.quantity}}>
+                            <input type='text' id='newqty{{this.id}}' size='3' value={{this.quantity}}>
                         </label></td>
                         <td>${{this.price}}</td>
-                        <td>${{subtotal this.price this.quantity}}</td>
                         <td><a href='\showcart?delete={{this.id}}'>Remove Item from Cart</a></td>
-                        <td><input type=submit value='Update Quantity'></td>
+                        <td><input type=button onclick="update({{this.id}}, document.form1.newqty{{this.id}}.value)" value="Update Quantity"></td>
                     </tr>
                 {{/if}}
             {{/each}}
