@@ -104,6 +104,7 @@ router.get('/', function (req, res) {
             customerName: shippingTo,
             title: "Order"
         })
+        req.session.productList = null;
     })()
 
 });
