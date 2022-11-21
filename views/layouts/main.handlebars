@@ -9,23 +9,30 @@
     <title>{{title}}</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg" style="background-color: #e55701;">
+<nav class="navbar navbar-dark navbar-expand-lg" style="background-color: #e55701;">
     <div class="container-fluid">
         <span class="navbar-brand mb-0 h1" style="color: #fff780">OnlyDucks</span>
-        <div class="nav-item dropstart">
-            <a class="nav-link dropdown-toggle" href="#" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false" style="color: #fff780">
-                Pages
-            </a>
-            <ul class="dropdown-menu" style="background-color: #fdffc5">
-                <li><a class="dropdown-item" href="">Home</a></li>
-                <li><a class="dropdown-item" href="/listprod">Shop</a></li>
-                <li><a class="dropdown-item" href="/listorder">Orders</a></li>
-                <li><a class="dropdown-item" href="/showcart">Cart</a></li>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item nav-color">
+                    <a class="nav-link active nav-color" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item nav-color">
+                    <a class="nav-link active nav-color" aria-current="page" href="/listprod">Products</a>
+                </li>
+                <li class="nav-item nav-color">
+                    <a class="nav-link active nav-color" aria-current="page" href="/listorder">List Order</a>
+                </li>
+                <li class="nav-item nav-color">
+                    <a class="nav-link active nav-color" aria-current="page" href="/showcart">Shopping Cart</a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
 {{{body}}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
 </body>
 </html>
