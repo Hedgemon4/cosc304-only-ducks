@@ -22,7 +22,7 @@ router.get('/', function (req, res) {
             }
         }
     }
-    res.render('ordertable', {product: productList, title: "ordertable"})
+    res.render('showcart', {product: productList, title: "showcart"})
 });
 
 
