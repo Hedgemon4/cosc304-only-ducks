@@ -78,7 +78,7 @@ hbs.handlebars.registerHelper('displaymoney', function (number) {
     return Number(number).toFixed(2)
 })
 
-hbs.handlebars.registerHelper('updateQuanity', function(productList, productID, quantity){
+hbs.handlebars.registerHelper('updateQuantity', function(productList, productID, quantity){
     for(let i = 0; i < productList.length; i++){
         let product = productList[i]
         if(product.productId == productID){
