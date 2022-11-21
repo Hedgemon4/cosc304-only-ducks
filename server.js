@@ -79,7 +79,6 @@ hbs.handlebars.registerHelper('displaymoney', function (number) {
 })
 
 hbs.handlebars.registerHelper('getAddToCartLink', function(productId, productName, productPrice){
-    console.log(productPrice)
     return ("addcart?id=" + productId + "&name=" +escape(productName) + "&price=" + productPrice )
 })
 
