@@ -4,17 +4,9 @@ const sql = require('mssql');
 require('moment');
 
 router.get('/', function (req, res) {
-    res.setHeader('Content-Type', 'text/html');
-    res.write("<title>Only Ducks Grocery Order Processing</title>");
-
     let productList = false;
     if (req.session.productList && req.session.productList.length > 0) {
         productList = req.session.productList;
-    }
-
-    // determine if there are products in the shopping cart
-    if (productList.length === 0) {
-        res.write('<h1>Your shopping cart is empty!</h1>');
     }
 
     let customerId = false;
@@ -46,7 +38,10 @@ router.get('/', function (req, res) {
 
     // determine if a valid customer id was entered
     (async () => {
+        let validId = false;
+        let orderId = false;
         if (isPositiveInteger(customerId) && await idInDatabase()) {
+            validId = true;
             let sqlQuery = "INSERT INTO ordersummary (customerId, orderDate, totalAmount) OUTPUT INSERTED.orderId VALUES(@custId, @date, @total)"
             let pool = await sql.connect(dbConfig);
             const ps1 = new sql.PreparedStatement(pool)
@@ -59,13 +54,9 @@ router.get('/', function (req, res) {
 
             let result = await ps1.execute({custId: customerId, date: new Date(), total: 0})
 
-            let orderId = result.recordset[0].orderId
+            orderId = result.recordset[0].orderId
 
             ps1.unprepare()
-
-            res.write('<h1>Your Order Summary</h1>');
-            res.write("<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>");
-            res.write("<th>Price</th><th>Subtotal</th></tr>");
 
             const ps2 = new sql.PreparedStatement(pool)
             sqlQuery = "INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, @productId, @quantity, @price)"
@@ -90,16 +81,6 @@ router.get('/', function (req, res) {
                     quantity: product.quantity,
                     price: product.price
                 })
-
-                res.write("<tr><td>" + product.id + "</td>");
-                res.write("<td>" + product.name + "</td>");
-
-                res.write("<td align=\"center\">" + product.quantity + "</td>");
-
-                res.write("<td align=\"right\">$" + Number(product.price).toFixed(2) + "</td>");
-                res.write("<td align=\"right\">$" + (product.quantity * product.price).toFixed(2) + "</td></tr>");
-                res.write("</tr>");
-                total = total + product.quantity * product.price;
             }
 
             ps2.unprepare()
@@ -113,23 +94,19 @@ router.get('/', function (req, res) {
             await ps3.prepare(sqlQuery)
 
             await ps3.execute({total: total, orderId: orderId})
-
             ps3.unprepare()
-
-            res.write("<tr><td colspan=\"4\" align=\"right\"><b>Order Total</b></td><td align=\"right\">$" + total.toFixed(2) + "</td></tr>");
-            res.write("</table>");
-            res.write('<h1>Order completed. Will be shipped soon...</h1>');
-            res.write('<h1>Your order reference number is: </h1>');
-            res.write('<h1>Shipping to customer: ' + customerId + ' Name: ' + shippingTo + '</h1>');
-            res.end();
-        } else {
-            res.write('<h1>Invalid customer id. Go back to the previous page and try again.</h1>')
-            res.end();
         }
+        res.render('order', {
+            products: productList,
+            validId: validId,
+            orderId: orderId,
+            customerId: customerId,
+            customerName: shippingTo,
+            title: "Order"
+        })
     })()
 
 });
-
 
 module.exports = router;
 
