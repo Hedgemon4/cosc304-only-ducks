@@ -121,6 +121,7 @@ router.get('/', function (req, res) {
             res.write('<h1>Order completed. Will be shipped soon...</h1>');
             res.write('<h1>Your order reference number is: </h1>');
             res.write('<h1>Shipping to customer: ' + customerId + ' Name: ' + shippingTo + '</h1>');
+            req.session.productList = null;
             res.end();
         } else {
             res.write('<h1>Invalid customer id. Go back to the previous page and try again.</h1>')
