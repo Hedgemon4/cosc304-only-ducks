@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
     res.setHeader('Content-Type', 'text/html');
     // If the product list isn't set in the session,
     // create a new list.

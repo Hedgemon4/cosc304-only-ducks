@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
-const moment = require('moment');
+require('moment');
 
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res) {
     res.setHeader('Content-Type', 'text/html');
     res.write("<title>Only Ducks Grocery Order Processing</title>");
 
@@ -97,7 +97,7 @@ router.get('/', function (req, res, next) {
                 res.write("<td align=\"center\">" + product.quantity + "</td>");
 
                 res.write("<td align=\"right\">$" + Number(product.price).toFixed(2) + "</td>");
-                res.write("<td align=\"right\">$" + (Number(product.quantity.toFixed(2)) * Number(product.price)).toFixed(2) + "</td></tr>");
+                res.write("<td align=\"right\">$" + (product.quantity * product.price).toFixed(2) + "</td></tr>");
                 res.write("</tr>");
                 total = total + product.quantity * product.price;
             }

@@ -59,7 +59,7 @@ app.use(express.static(__dirname + '/public'));
 let hbs = exphbs.create({});
 
 hbs.handlebars.registerHelper('subtotal', function (price, quantity) {
-    return (Number(quantity.toFixed(2)) * Number(price)).toFixed(2)
+    return (quantity * price).toFixed(2);
 })
 
 hbs.handlebars.registerHelper('ordertotal', function (productList) {
@@ -79,7 +79,6 @@ hbs.handlebars.registerHelper('displaymoney', function (number) {
 })
 
 hbs.handlebars.registerHelper('getAddToCartLink', function(productId, productName, productPrice){
-    console.log(productPrice)
     return ("addcart?id=" + productId + "&name=" +escape(productName) + "&price=" + productPrice )
 })
 
