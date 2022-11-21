@@ -59,7 +59,7 @@ app.use(express.static(__dirname + '/public'));
 let hbs = exphbs.create({});
 
 hbs.handlebars.registerHelper('subtotal', function (price, quantity) {
-    return (Number(quantity.toFixed(2)) * Number(price)).toFixed(2)
+    return (quantity * price).toFixed(2);
 })
 
 hbs.handlebars.registerHelper('ordertotal', function (productList) {
@@ -84,7 +84,7 @@ hbs.handlebars.registerHelper('updateQuanity', function(productList, productID, 
         if(!product){
             continue
         }
-        if(product.productId == productID){
+        if(product.productId === productID){
             product.quantity = quantity
         }
     }
