@@ -25,4 +25,6 @@ router.get('/', function (req, res) {
     res.render('ordertable', {product: productList, title: "ordertable"})
 });
 
+
+
 module.exports = router;

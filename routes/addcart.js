@@ -41,4 +41,8 @@ router.get('/', function(req, res, next) {
     res.redirect("/showcart");
 });
 
+router.get('/updateQuantity', function(req, res, next){
+
+})
+
 module.exports = router;

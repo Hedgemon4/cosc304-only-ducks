@@ -81,6 +81,9 @@ hbs.handlebars.registerHelper('displaymoney', function (number) {
 hbs.handlebars.registerHelper('updateQuanity', function(productList, productID, quantity){
     for(let i = 0; i < productList.length; i++){
         let product = productList[i]
+        if(!product){
+            continue
+        }
         if(product.productId == productID){
             product.quantity = quantity
         }
