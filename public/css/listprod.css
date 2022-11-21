@@ -1,0 +1,13 @@
+.product-search{
+    display: flex;
+    margin: 1rem;
+    gap: 1rem;
+}
+
+.search-bar{
+    max-width: 80%;
+}
+
+.page-space{
+    margin: 1rem;
+}
