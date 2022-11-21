@@ -81,6 +81,8 @@ router.get('/', function (req, res) {
                     quantity: product.quantity,
                     price: product.price
                 })
+
+                total = total + product.quantity * product.price;
             }
 
             ps2.unprepare()
@@ -104,7 +106,8 @@ router.get('/', function (req, res) {
             customerName: shippingTo,
             title: "Order"
         })
-        req.session.productList = null;
+        if(validId)
+            req.session.productList = null;
     })()
 
 });
