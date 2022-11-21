@@ -78,17 +78,11 @@ hbs.handlebars.registerHelper('displaymoney', function (number) {
     return Number(number).toFixed(2)
 })
 
-hbs.handlebars.registerHelper('updateQuanity', function(productList, productID, quantity){
-    for(let i = 0; i < productList.length; i++){
-        let product = productList[i]
-        if(!product){
-            continue
-        }
-        if(product.productId === productID){
-            product.quantity = quantity
-        }
-    }
+hbs.handlebars.registerHelper('getAddToCartLink', function(productId, productName, productPrice){
+    console.log(productPrice)
+    return ("addcart?id=" + productId + "&name=" +escape(productName) + "&price=" + productPrice )
 })
+
 
 // Rendering the main page
 app.get('/', function (req, res) {

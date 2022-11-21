@@ -1,0 +1,33 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/listprod.css">
+</head>
+<h1 class="page-space">Search for the products you want to buy:</h1>
+<form method="get" action="/listprod">
+    <div class="product-search">
+        <input type="text" name="productName" class="form-control search-bar">
+        <input type="submit" class="btn btn-primary" value="Submit">
+        <input type="reset" class="btn btn-primary" value="Reset">
+    </div>
+    {{#if name}}
+        <h2 class="page-space">Products containing '{{name}}'</h2>
+    {{else}}
+        <h2 class="page-space">All Products</h2>
+    {{/if}}
+    {{#if product}}
+        <table class="table page-space">
+            <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Price</th>
+                <th scope="col"></th>
+            </tr>
+            {{#each product}}
+                <tr>
+                    <td>{{this.productName}}</td>
+                    <td>${{displaymoney this.productPrice}}</td>
+                    <td><a href={{getAddToCartLink this.productId this.productName this.productPrice}}>Add to Cart</a>
+                    </td>
+                </tr>
+            {{/each}}
+        </table>
+    {{/if}}
+</form>
