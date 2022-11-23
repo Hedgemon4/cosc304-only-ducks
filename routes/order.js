@@ -104,7 +104,7 @@ router.get('/', function (req, res) {
             orderId: orderId,
             customerId: customerId,
             customerName: shippingTo,
-            title: "Order"
+            title: "OnlyDucks Order"
         })
         if(validId)
             req.session.productList = null;

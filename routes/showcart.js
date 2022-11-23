@@ -43,7 +43,7 @@ router.get('/', function (req, res) {
         }
     }
 
-    res.render('showcart', {product: productList, title: "showcart"})
+    res.render('showcart', {product: productList, title: "OnlyDucks Cart"})
 });
 
 

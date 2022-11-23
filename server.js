@@ -3,6 +3,7 @@ const exphbs = require('express-handlebars')
 const session = require('express-session')
 const bodyParser  = require('body-parser')
 
+let index = require('./routes/index');
 let loadData = require('./routes/loaddata')
 let listOrder = require('./routes/listorder')
 let listProd = require('./routes/listprod')
@@ -58,6 +59,7 @@ app.set('view engine', 'handlebars');
 // Setting up Express.js routes.
 // These present a "route" on the URL of the site.
 // Eg: http://127.0.0.1/loaddata
+app.use('/', index);
 app.use('/loaddata', loadData);
 app.use('/listorder', listOrder);
 app.use('/listprod', listProd);
@@ -101,14 +103,6 @@ hbs.handlebars.registerHelper('displaymoney', function (number) {
 
 hbs.handlebars.registerHelper('getAddToCartLink', function(productId, productName, productPrice){
     return ("addcart?id=" + productId + "&name=" +escape(productName) + "&price=" + productPrice )
-})
-
-
-// Rendering the main page
-app.get('/', function (req, res) {
-    res.render('index', {
-        title: "Only Ducks Grocery Main Page"
-    });
 })
 
 // Starting our Express app
