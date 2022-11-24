@@ -22,7 +22,7 @@ router.get('/', function (req, res) {
                     products.push(results2.recordset)
                 }
 
-                res.render('listorder', {order : orders, products : products, title : "OrderList"})
+                res.render('listorder', {order : orders, products : products, title : "OnlyDucks Order List"})
             } catch (err) {
                 console.dir(err);
                 res.write(JSON.stringify(err));
