@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
     res.setHeader('Content-Type', 'text/html');
     // Set the message for the login, if present
     let loginMessage = false;
@@ -10,10 +10,14 @@ router.get('/', function(req, res, next) {
         req.session.loginMessage = false;
     }
 
-    res.render('login', {
-        title: "OnlyDucks Login",
-        loginMessage: loginMessage
-    });
+    if (!req.session.authenticatedUser) {
+        res.render('login', {
+            title: "OnlyDucks Login",
+            loginMessage: loginMessage
+        });
+    } else {
+        res.redirect('/')
+    }
 });
 
 module.exports = router;

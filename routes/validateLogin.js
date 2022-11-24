@@ -8,16 +8,13 @@ router.post('/', function (req, res) {
     // to the database in the validateLogin function.
 
     (async () => {
-        //if(!auth) {
-            let authenticatedUser = await validateLogin(req);
-            if (authenticatedUser) {
-                req.session.authenticatedUser = authenticatedUser
-                res.redirect("/");
-            } else {
-                res.redirect("/login")
-            }
-        // } else
-        //     res.redirect("/")
+        let authenticatedUser = await validateLogin(req);
+        if (authenticatedUser) {
+            req.session.authenticatedUser = authenticatedUser
+            res.redirect("/");
+        } else {
+            res.redirect("/login")
+        }
     })();
 });
 

@@ -57,7 +57,6 @@ app.engine('handlebars', exphbs());
 app.use(function (req, res, next) {
     res.locals.session = req.session;
     res.locals.body = req.body
-    console.log(res.locals.session);
     next();
 });
 
