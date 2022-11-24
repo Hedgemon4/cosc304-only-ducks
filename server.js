@@ -19,11 +19,11 @@ let product = require('./routes/product')
 let displayImage = require('./routes/displayImage')
 let customer = require('./routes/customer')
 let ship = require('./routes/ship')
-const app = express();
+const app = express()
 
 // Enable parsing of requests for POST requests
-app.use(express.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.json())
+app.use(bodyParser.urlencoded({extended: true}))
 
 // This DB Config is accessible globally
 dbConfig = {
@@ -116,6 +116,10 @@ hbs.handlebars.registerHelper('login', function (session) {
         return '<a class="nav-link active nav-color" aria-current="page" href="/customer">' + session.authenticatedUser + '</a>'
     else
         return '<a class=\"nav-link active nav-color\" aria-current=\"page\" href=\"/login\">Login</a>'
+})
+
+hbs.handlebars.registerHelper('displayDate', function (date){
+    return new Date(date)
 })
 
 // Starting our Express app

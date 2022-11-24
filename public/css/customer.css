@@ -1,0 +1,13 @@
+.space{
+    margin: 1rem;
+}
+
+.customer-display{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.table-item{
+    max-width: 500px;
+}
