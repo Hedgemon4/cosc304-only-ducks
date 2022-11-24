@@ -47,7 +47,7 @@ app.use(session({
     cookie: {
         httpOnly: false,
         secure: false,
-        maxAge: 60000,
+        maxAge: 6000000,
     }
 }))
 
@@ -119,7 +119,7 @@ hbs.handlebars.registerHelper('login', function (session) {
 })
 
 hbs.handlebars.registerHelper('displayDate', function (date){
-    return new Date(date)
+    return new Date(date).toLocaleDateString("en-CA")
 })
 
 // Starting our Express app

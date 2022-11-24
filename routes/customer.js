@@ -9,9 +9,10 @@ router.get('/', function (req, res, next) {
         return
     }
         (async function () {
+            let pool = false
             try {
                 let username = req.session.authenticatedUser
-                let pool = await sql.connect(dbConfig);
+                pool = await sql.connect(dbConfig)
                 const ps = new sql.PreparedStatement(pool)
                 ps.input('userId', sql.VarChar(20))
                 await ps.prepare("SELECT * FROM customer WHERE userid = @userId")
@@ -21,6 +22,8 @@ router.get('/', function (req, res, next) {
             } catch (err) {
                 console.dir(err)
                 res.end()
+            } finally {
+                pool.close()
             }
         })();
 });

@@ -39,7 +39,7 @@ async function validateLogin(req) {
 
             let user = results.recordset
 
-            if (user[0].userid && user[0].password)
+            if (user[0])
                 return username;
 
             return false;
