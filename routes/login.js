@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
     }
 
     res.render('login', {
-        title: "Login Screen",
+        title: "OnlyDucks Login",
         loginMessage: loginMessage
     });
 });

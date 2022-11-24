@@ -1,7 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const session = require('express-session')
-const bodyParser  = require('body-parser')
+const bodyParser = require('body-parser')
 
 let index = require('./routes/index');
 let loadData = require('./routes/loaddata')
@@ -19,7 +19,6 @@ let product = require('./routes/product')
 let displayImage = require('./routes/displayImage')
 let customer = require('./routes/customer')
 let ship = require('./routes/ship')
-
 const app = express();
 
 // Enable parsing of requests for POST requests
@@ -54,6 +53,14 @@ app.use(session({
 
 // Setting up the rendering engine
 app.engine('handlebars', exphbs());
+
+app.use(function (req, res, next) {
+    res.locals.session = req.session;
+    res.locals.body = req.body
+    console.log(res.locals.session);
+    next();
+});
+
 app.set('view engine', 'handlebars');
 
 // Setting up Express.js routes.
@@ -101,8 +108,15 @@ hbs.handlebars.registerHelper('displaymoney', function (number) {
     return Number(number).toFixed(2)
 })
 
-hbs.handlebars.registerHelper('getAddToCartLink', function(productId, productName, productPrice){
-    return ("addcart?id=" + productId + "&name=" +escape(productName) + "&price=" + productPrice )
+hbs.handlebars.registerHelper('getAddToCartLink', function (productId, productName, productPrice) {
+    return ("addcart?id=" + productId + "&name=" + escape(productName) + "&price=" + productPrice)
+})
+
+hbs.handlebars.registerHelper('login', function (session) {
+    if (session.authenticatedUser)
+        return '<a class="nav-link active nav-color" aria-current="page" href="/customer">' + session.authenticatedUser + '</a>'
+    else
+        return '<a class=\"nav-link active nav-color\" aria-current=\"page\" href=\"/login\">Login</a>'
 })
 
 // Starting our Express app
