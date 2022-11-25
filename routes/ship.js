@@ -3,13 +3,12 @@ const router = express.Router();
 const sql = require('mssql');
 const moment = require('moment');
 
-router.get('/', function (req, res, next) {
+router.get('/', async function (req, res, next) {
     res.setHeader('Content-Type', 'text/html');
 
     let orderId = "";
     if (req.query.orderId) orderId = req.query.orderId;
 
-    // TODO: Check if valid order id
     function isPositiveInteger(str) {
         if (typeof str !== 'string') {
             return false;
@@ -31,10 +30,15 @@ router.get('/', function (req, res, next) {
         }
     }
 
-    (async function () {
+    if (isPositiveInteger(orderId) && await orderIdInDatabase()) {
+        res.write("Yup");
+    } else {
+        res.write("Nope");
+    }
+
+    await (async function () {
         if (isPositiveInteger(customerId) && await orderIdInDatabase()) {
             try {
-                /*
                 // TODO: Start a transaction
                 let pool = await sql.connect(dbConfig);
                 const transaction = new sql.Transaction(pool);
@@ -48,14 +52,11 @@ router.get('/', function (req, res, next) {
                     let rolledBack = false
 
                     transaction.on('rollback', aborted => {
-                        // emitted with aborted === true
-
                         rolledBack = true
                     })
 
                     new sql.Request(transaction)
-                        .query('', (err, result) => {
-                            // insert should fail because of invalid value
+                        .query('SELECT * FROM ordersummary WHERE orderId = @orderId', (err, result) => {
 
                             if (err) {
                                 if (!rolledBack) {
@@ -70,7 +71,6 @@ router.get('/', function (req, res, next) {
                             }
                         })
                 })
-                 */
                 res.write("Hi");
             } catch (err) {
                 console.dir(err);
