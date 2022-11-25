@@ -25,7 +25,7 @@
                             <td>{{this.id}}</td>
                             <td>{{this.name}}</td>
                             <td><label>
-                                <input type='text' id='newqty{{this.id}}' size='3' value={{this.quantity}}>
+                                <input type='number' min='1' id='newqty{{this.id}}' size='3' value={{this.quantity}}>
                             </label></td>
                             <td>${{this.price}}</td>
                             <td>${{subtotal this.price this.quantity}}</td>
