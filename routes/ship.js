@@ -39,39 +39,28 @@ router.get('/', async function (req, res, next) {
     await (async function () {
         if (isPositiveInteger(customerId) && await orderIdInDatabase()) {
             try {
-                // TODO: Start a transaction
                 let pool = await sql.connect(dbConfig);
                 const transaction = new sql.Transaction(pool);
-                transaction.begin(err => {
-                    // ... error checks
-                    // TODO: Retrieve all items in order with given id
-                    // TODO: Create a new shipment record.
-                    // TODO: For each item verify sufficient quantity available in warehouse 1.
-                    // TODO: If any item does not have sufficient inventory, cancel transaction and rollback. Otherwise, update inventory for each item.
+                try {
+                    // TODO: Start a transaction
+                    await transaction.begin();
 
-                    let rolledBack = false
+                    const request = new sql.Request(transaction);
 
-                    transaction.on('rollback', aborted => {
-                        rolledBack = true
-                    })
+                    const results = await Promise.all([
+                        // TODO: Retrieve all items in order with given id
+                        // TODO: Create a new shipment record.
+                        // TODO: For each item verify sufficient quantity available in warehouse 1.
+                        // TODO: If any item does not have sufficient inventory, cancel transaction and rollback. Otherwise, update inventory for each item.
+                    ]);
 
-                    new sql.Request(transaction)
-                        .query('SELECT * FROM ordersummary WHERE orderId = @orderId', (err, result) => {
-
-                            if (err) {
-                                if (!rolledBack) {
-                                    transaction.rollback(err => {
-                                        // ... error checks
-                                    })
-                                }
-                            } else {
-                                transaction.commit(err => {
-                                    // ... error checks
-                                })
-                            }
-                        })
-                })
-                res.write("Hi");
+                    await transaction.commit();
+                } catch (err) {
+                    await transaction.rollback();
+                    throw err;
+                } finally {
+                    await pool.close();
+                }
             } catch (err) {
                 console.dir(err);
                 res.write(err + "")
