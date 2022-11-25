@@ -7,8 +7,9 @@ router.get('/', function (req, res) {
     if (req.query.productName) name = req.query.productName;
 
     (async function () {
+        let pool = false;
         try {
-            let pool = await sql.connect(dbConfig)
+            pool = await sql.connect(dbConfig)
 
             const ps = new sql.PreparedStatement(pool)
             ps.input('param', sql.VarChar(40))
@@ -22,8 +23,9 @@ router.get('/', function (req, res) {
 
         } catch (err) {
             console.dir(err);
-            res.write(JSON.stringify(err));
             res.end();
+        } finally {
+            pool.close()
         }
     })();
 });

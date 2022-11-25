@@ -4,10 +4,7 @@ const sql = require('mssql');
 const auth = require('../auth');
 
 router.get('/', function (req, res, next) {
-    if (!auth.checkAuthentication(req, res)) {
-        res.redirect('/login')
-        return
-    }
+    if (auth.checkAuthentication(req, res)) {
         (async function () {
             let pool = false
             try {
@@ -26,6 +23,7 @@ router.get('/', function (req, res, next) {
                 pool.close()
             }
         })();
-});
+    }
+})
 
 module.exports = router;

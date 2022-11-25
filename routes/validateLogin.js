@@ -26,8 +26,9 @@ async function validateLogin(req) {
     let username = req.body.username;
     let password = req.body.password;
     let authenticatedUser = await (async function () {
+        let pool = false
         try {
-            let pool = await sql.connect(dbConfig);
+            pool = await sql.connect(dbConfig);
 
             // If so, set authenticatedUser to be the username.\
             const ps = new sql.PreparedStatement(pool)
@@ -40,16 +41,18 @@ async function validateLogin(req) {
             let user = results.recordset
 
             if (user[0])
-                return username;
+                return username
 
             return false;
         } catch (err) {
-            console.dir(err);
+            console.dir(err)
             return false;
+        } finally {
+            pool.close()
         }
     })();
 
-    return authenticatedUser;
+    return authenticatedUser
 }
 
-module.exports = router;
+module.exports = router
