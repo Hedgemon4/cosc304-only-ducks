@@ -105,5 +105,9 @@ hbs.handlebars.registerHelper('getAddToCartLink', function(productId, productNam
     return ("addcart?id=" + productId + "&name=" +escape(productName) + "&price=" + productPrice )
 })
 
+hbs.handlebars.registerHelper('getProductDescriptionLink', function(productId){
+    return ("addcart?id=" + productId + "&name=" +escape(productName) + "&price=" + productPrice )
+})
+
 // Starting our Express app
 app.listen(3000)

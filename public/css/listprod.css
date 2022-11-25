@@ -11,3 +11,12 @@
 .page-space{
     margin: 1rem;
 }
+
+.list-product-flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
