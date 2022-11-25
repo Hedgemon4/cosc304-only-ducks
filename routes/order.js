@@ -98,14 +98,6 @@ router.get('/', function (req, res) {
 
                 await ps3.execute({total: total, orderId: orderId})
                 ps3.unprepare()
-                res.render('order', {
-                    products: productList,
-                    validId: validId,
-                    orderId: orderId,
-                    customerId: customerId,
-                    customerName: shippingTo,
-                    title: "OnlyDucks Order"
-                })
                 if (validId)
                     req.session.productList = null;
             } catch (err) {
@@ -115,6 +107,14 @@ router.get('/', function (req, res) {
                 pool.close()
             }
         }
+        res.render('order', {
+            products: productList,
+            validId: validId,
+            orderId: orderId,
+            customerId: customerId,
+            customerName: shippingTo,
+            title: "OnlyDucks Order"
+        })
     })()
 })
 
