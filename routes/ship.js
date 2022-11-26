@@ -33,7 +33,6 @@ router.get('/', async function (req, res) {
 
     await (async function () {
         if (isPositiveInteger(orderId) && await orderIdInDatabase()) {
-            res.write("Correct id");
             try {
                 let pool = await sql.connect(dbConfig);
                 const transaction = new sql.Transaction(pool);
@@ -74,7 +73,7 @@ router.get('/', async function (req, res) {
                         if (quantityInWarehouse < orderProduct.quantity) {
                             await transaction.rollback();
                             res.write("<h2>Shipment not done. Insufficient inventory for product id: </h2>")
-                            res.end();
+                            return;
                         }
 
                         let newQty = quantityInWarehouse - orderProduct.quantity;
