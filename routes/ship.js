@@ -64,7 +64,6 @@ router.get('/', async function (req, res) {
                         if (!orderProduct) {
                             continue
                         }
-                        console.log("OP: " + orderProduct);
 
                         let results2 = await pool.request().input('productId', sql.Int(), orderProduct.productId).query(getQuantityInWarehouse);
                         let quantityInWarehouse = 0;
@@ -72,22 +71,20 @@ router.get('/', async function (req, res) {
                             quantityInWarehouse = results2.recordset[0].quantity;
                         }
 
-                        res.write("Quantity in warehouse: " + quantityInWarehouse);
-                        res.write("Quantity ordered: " + orderProduct.quantity);
-
                         if (quantityInWarehouse < orderProduct.quantity) {
-                            res.write("Not enough stock!");
                             await transaction.rollback();
+                            res.write("<h2>Shipment not done. Insufficient inventory for product id: </h2>")
                             res.end();
                         }
 
                         let newQty = quantityInWarehouse - orderProduct.quantity;
                         await pool.request().input('newQty', sql.Int(), newQty).input('productId', sql.Int(), orderProduct.productId).query(updateInventory);
+                        res.write("<p>Ordered product: " + orderProduct.productId + " Qty: " + orderProduct.quantity + " Previous inventory: " + quantityInWarehouse + " New inventory: " + newQty + "</p>");
                     }
                     await transaction.commit();
+                    res.write("<h2>Shipment successfully processed.</h2>")
                 } catch (err) {
                     await transaction.rollback();
-                    throw err;
                 } finally {
                     await pool.close();
                 }
