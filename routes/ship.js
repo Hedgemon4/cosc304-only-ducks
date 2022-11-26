@@ -55,7 +55,7 @@ router.get('/', async function (req, res) {
                     console.log(shipments);
 
                     // Verifying that there is sufficient quantity available in warehouse 1 for each item
-                    // TODO: If any item does not have sufficient inventory, cancel transaction and rollback. Otherwise, update inventory for each item.
+                    // Cancelling transaction and rolling back if any item does not have sufficient inventory, updating inventory otherwise
                     let getQuantityInWarehouse = "SELECT productinventory.quantity FROM productinventory WHERE productinventory.productId = @productId AND productinventory.warehouseId = 1";
                     let updateInventory = "UPDATE productinventory SET productinventory.quantity = @newQty WHERE productinventory.productId = @productId AND productinventory.warehouseId = 1"
                     for (let i = 0; i < orderProducts.length; i++) {
@@ -72,7 +72,7 @@ router.get('/', async function (req, res) {
 
                         if (quantityInWarehouse < orderProduct.quantity) {
                             await transaction.rollback();
-                            res.write("<h2>Shipment not done. Insufficient inventory for product id: </h2>")
+                            res.write("<h2>Shipment not done. Insufficient inventory for product id: " + orderProduct.productId + "</h2>")
                             return;
                         }
 
@@ -92,6 +92,8 @@ router.get('/', async function (req, res) {
                 res.write(err + "")
                 res.end();
             }
+        } else {
+            res.write("<h2>Invalid order id</h2>")
         }
     })();
     res.end();
