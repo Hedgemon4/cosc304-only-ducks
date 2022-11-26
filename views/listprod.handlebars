@@ -19,9 +19,9 @@
             {{#each product}}
                     <div class="card-group">
                         <div class="card" style="width: 24rem;">
-                            <img src="/images/1.jpg" class="card-img-top" alt="Ducks">
+                            <img src={{this.productImageURL}} class="card-img-top" alt="Ducks">
                             <div class="card-body">
-                                <h5 class="card-title"><a href='/product?id={{this.id}}'>{{this.productName}} </a></h5>
+                                <h5 class="card-title"><a href={{getProductDescriptionLink this.productId}}>{{this.productName}} </a></h5>
                                 <h6>${{displaymoney this.productPrice}}</h6>
                                 <p class="card-text">{{this.productDesc}}</p>
                                 <p><a href={{getAddToCartLink this.productId this.productName this.productPrice}} class="btn btn-primary">Add to Cart</a></p>

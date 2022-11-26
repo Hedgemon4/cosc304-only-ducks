@@ -16,11 +16,11 @@ router.get('/', function(req, res, next) {
         try {
             let pool = await sql.connect(dbConfig);
 
-            let sqlQuery = "// TODO: Modify SQL to retrieve productImage given productId";
+            const ps = new sql.PreparedStatement(pool)
+            ps.input('idParam', sql.Int)
+            await ps.prepare("SELECT productImage FROM product WHERE product.productId = @idParam")
 
-            result = await pool.request()
-                .input('id', sql.Int, idVal)
-                .query(sqlQuery);
+            let result = await ps.execute({idParam: idVal})
 
             if (result.recordset.length === 0) {
                 console.log("No image record");
