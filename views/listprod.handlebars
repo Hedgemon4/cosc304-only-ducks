@@ -23,7 +23,7 @@
                             <div class="card-body">
                                 <h5 class="card-title"><a href='/product?id={{this.id}}'>{{this.productName}} </a></h5>
                                 <h6>${{displaymoney this.productPrice}}</h6>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <p class="card-text">{{this.productDesc}}</p>
                                 <p><a href={{getAddToCartLink this.productId this.productName this.productPrice}} class="btn btn-primary">Add to Cart</a></p>
                             </div>
                         </div>
