@@ -4,7 +4,6 @@ const sql = require('mssql');
 const moment = require('moment');
 
 router.get('/', function (req, res) {
-    res.set("Content-Type", "text/html");
 
     let orderId = "";
     if (req.query.orderId) orderId = req.query.orderId;
@@ -26,11 +25,14 @@ router.get('/', function (req, res) {
             return result.recordset.length !== 0;
         } catch (err) {
             console.dir(err);
-            res.write(JSON.stringify(err));
+            // res.write(JSON.stringify(err));
         } finally {
             pool.close();
         }
     }
+
+    let message;
+    const orderedProductInfo = [];
 
     (async function () {
         if (isPositiveInteger(orderId) && await orderIdInDatabase()) {
@@ -51,15 +53,10 @@ router.get('/', function (req, res) {
                 let results = await ps.execute({orderId: orderId})
                 let orderProducts = results.recordset;
                 await ps.unprepare()
-                console.log(orderProducts);
 
                 // creating new shipment record
                 let createShipment = "INSERT INTO shipment (shipmentDate, warehouseId) VALUES (@todaysDate, 1);";
                 await transaction.request().input('todaysDate', sql.DateTime, moment().format('Y-MM-DD HH:mm:ss')).query(createShipment);
-
-                let toBePrinted = await transaction.request().query("SELECT * FROM shipment;");
-                let shipments = toBePrinted.recordset;
-                console.log(shipments);
 
                 // Verifying that there is sufficient quantity available in warehouse 1 for each item
                 // Cancelling transaction and rolling back if any item does not have sufficient inventory, updating inventory otherwise
@@ -79,30 +76,40 @@ router.get('/', function (req, res) {
 
                     if (quantityInWarehouse < orderProduct.quantity) {
                         await transaction.rollback();
-                        res.write('<h2>Shipment not done. Insufficient inventory for product id: ' + orderProduct.productId + '</h2>')
+                        message = "Shipment not done. Insufficient inventory for product id: " + orderProduct.productId;
+                        renderPage()
                         return;
                     }
 
                     let newQty = quantityInWarehouse - orderProduct.quantity;
                     await transaction.request().input('newQty', sql.Int(), newQty).input('productId', sql.Int(), orderProduct.productId).query(updateInventory);
-                    res.write("<p>Ordered product: " + orderProduct.productId + " Qty: " + orderProduct.quantity + " Previous inventory: " + quantityInWarehouse + " New inventory: " + newQty + "</p>");
+                    orderedProductInfo.push("Ordered product: " + orderProduct.productId + " Qty: " + orderProduct.quantity + " Previous inventory: " + quantityInWarehouse + " New inventory: " + newQty);
                 }
                 await transaction.commit();
-                res.write("<h2>Shipment successfully processed.</h2>")
+                message = "Shipment successfully processed.";
+                renderPage()
             } catch (err) {
                 await transaction.rollback()
                 console.dir(err)
+                renderPage()
             } finally {
                 pool.close()
-                res.write('<h2 class="space"><a href="/">Back to homepage</a></h2>')
-                res.end()
             }
         } else {
-            res.write("<h2>Invalid order id</h2>")
-            res.write('<h2 class="space"><a href="/">Back to homepage</a></h2>')
-            res.end()
+            message = "Invalid order id";
+            renderPage()
         }
     })();
+
+
+    function renderPage() {
+        res.render('ship', {
+            orderedProductInfo: orderedProductInfo,
+            message: message,
+            title: "OnlyDucks Shipment"
+        })
+    }
+
 });
 
 module.exports = router;
