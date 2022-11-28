@@ -26,9 +26,11 @@
                 <li class="nav-item nav-color">
                     <a class="nav-link active nav-color" aria-current="page" href="/showcart">Shopping Cart</a>
                 </li>
+                {{#if (displayAdmin session)}}
                 <li class="nav-item nav-color">
                     <a class="nav-link active nav-color" aria-current="page" href="/admin">Admin</a>
                 </li>
+                {{/if}}
             </ul>
         </div>
         <ul class="navbar-nav">
