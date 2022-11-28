@@ -122,5 +122,9 @@ hbs.handlebars.registerHelper('displayDate', function (date){
     return new Date(date).toLocaleDateString("en-CA")
 })
 
+hbs.handlebars.registerHelper('getProductDescriptionLink', function(productId){
+    return ("product?id=" + productId)
+})
+
 // Starting our Express app
 app.listen(3000)
