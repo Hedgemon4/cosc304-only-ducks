@@ -13,7 +13,7 @@ router.get('/', function (req, res) {
 
             const ps = new sql.PreparedStatement(pool)
             ps.input('param', sql.VarChar(40))
-            await ps.prepare("SELECT product.productId, product.productName, product.productPrice, product.productDesc FROM product WHERE product.productName LIKE '%' + @param + '%'")
+            await ps.prepare("SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL FROM product WHERE product.productName LIKE '%' + @param + '%'")
 
             let results = await ps.execute({param: name})
 

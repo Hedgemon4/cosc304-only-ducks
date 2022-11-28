@@ -123,7 +123,7 @@ hbs.handlebars.registerHelper('displayDate', function (date){
 })
 
 hbs.handlebars.registerHelper('getProductDescriptionLink', function(productId){
-    return ("addcart?id=" + productId + "&name=" +escape(productName) + "&price=" + productPrice )
+    return ("product?id=" + productId)
 })
 
 // Starting our Express app

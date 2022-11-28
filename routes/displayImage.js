@@ -2,25 +2,26 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 
-router.get('/', function(req, res, next) {
-    res.setHeader('Content-Type', 'image/jpeg');
+router.get('/', function (req, res) {
+    res.setHeader('Content-Type', 'image/jpeg')
 
-    let id = req.query.id;
-    let idVal = parseInt(id);
+    let id = req.query.id
+    let idVal = parseInt(id)
     if (isNaN(idVal)) {
-        res.end();
-        return;
+        res.end()
+        return
     }
 
-    (async function() {
+    (async function () {
+        let pool = false
         try {
-            let pool = await sql.connect(dbConfig);
+            pool = await sql.connect(dbConfig)
 
-            let sqlQuery = "// TODO: Modify SQL to retrieve productImage given productId";
+            const ps = new sql.PreparedStatement(pool)
+            ps.input('idParam', sql.Int)
+            await ps.prepare("SELECT productImage FROM product WHERE product.productId = @idParam")
 
-            result = await pool.request()
-                .input('id', sql.Int, idVal)
-                .query(sqlQuery);
+            let result = await ps.execute({idParam: idVal})
 
             if (result.recordset.length === 0) {
                 console.log("No image record");
@@ -33,12 +34,13 @@ router.get('/', function(req, res, next) {
             }
 
             res.end()
-        } catch(err) {
-            console.dir(err);
-            res.write(err + "")
-            res.end();
+        } catch (err) {
+            console.dir(err)
+            res.end()
+        } finally {
+            pool.close()
         }
-    })();
-});
+    })()
+})
 
-module.exports = router;
+module.exports = router
