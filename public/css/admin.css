@@ -1,0 +1,8 @@
+.admin-display{
+    display: flex;
+    max-width: 50rem;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 1rem;
+    gap: 1rem;
+}

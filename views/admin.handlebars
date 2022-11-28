@@ -1,0 +1,25 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/admin.css">
+</head>
+<body>
+<div class="admin-display">
+    <h1>OnlyDucks Administrator Panel</h1>
+    <h2>Daily Sales Report</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Order Date</th>
+            <th scope="col">Total Order Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each dailySales}}
+            <tr>
+                <td>{{displayDate this.date}}</td>
+                <td>${{displaymoney this.dailyTotal}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+</body>
