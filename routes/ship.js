@@ -4,6 +4,7 @@ const sql = require('mssql');
 const moment = require('moment');
 
 router.get('/', function (req, res) {
+    res.set("Content-Type", "text/html");
 
     let orderId = "";
     if (req.query.orderId) orderId = req.query.orderId;
@@ -78,7 +79,7 @@ router.get('/', function (req, res) {
 
                     if (quantityInWarehouse < orderProduct.quantity) {
                         await transaction.rollback();
-                        res.write("<h2>Shipment not done. Insufficient inventory for product id: " + orderProduct.productId + "</h2>")
+                        res.write('<h2>Shipment not done. Insufficient inventory for product id: ' + orderProduct.productId + '</h2>')
                         return;
                     }
 
@@ -93,12 +94,14 @@ router.get('/', function (req, res) {
                 console.dir(err)
             } finally {
                 pool.close()
+                res.write('<h2 class="space"><a href="/">Back to homepage</a></h2>')
                 res.end()
             }
         } else {
             res.write("<h2>Invalid order id</h2>")
+            res.write('<h2 class="space"><a href="/">Back to homepage</a></h2>')
+            res.end()
         }
-        res.end()
     })();
 });
 
