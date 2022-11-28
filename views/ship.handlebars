@@ -1,0 +1,14 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/ship.css">
+</head>
+<body>
+{{#if orderedProductInfo}}
+    {{#each orderedProductInfo}}
+        {{#if this}}
+            <h2 class="space">{{this}}</h2>
+        {{/if}}
+    {{/each}}
+{{/if}}
+<h2 class="space">{{message}}</h2>
+<h2 class="space"><a href='/'>Return to homepage</a></h2>
+</body>

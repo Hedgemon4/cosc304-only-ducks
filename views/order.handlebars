@@ -15,13 +15,13 @@
             </tr>
             {{#each products}}
                 {{#if this}}
-                <tr>
-                    <td>{{this.id}}</td>
-                    <td>{{this.name}}</td>
-                    <td>{{this.quantity}}</td>
-                    <td>${{displaymoney this.price}}</td>
-                    <td>${{subtotal this.price this.quantity}}</td>
-                </tr>
+                    <tr>
+                        <td>{{this.id}}</td>
+                        <td>{{this.name}}</td>
+                        <td>{{this.quantity}}</td>
+                        <td>${{displaymoney this.price}}</td>
+                        <td>${{subtotal this.price this.quantity}}</td>
+                    </tr>
                 {{/if}}
             {{/each}}
             <tr>
@@ -29,7 +29,8 @@
                 <td>${{ordertotal products}}</td>
             </tr>
         </table>
-        <h1 class="space">Order completed. Will be shipped soon...</h1>
+        <h1 class="space">Order completed. Click below for shipping details</h1>
+        <h2 class="space"><a href='/ship?orderId={{orderId}}'>See shipment details</a></h2>
         <h1 class="space">Your order reference number is: {{orderId}}</h1>
         <h1 class="space">Shipping to customer: {{customerId}} Name: {{customerName}}</h1>
     {{else}}
