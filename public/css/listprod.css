@@ -11,3 +11,20 @@
 .page-space{
     margin: 1rem;
 }
+
+.list-product-flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5rem;
+    gap: 1rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.img {
+    float: left;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}

@@ -1,7 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const session = require('express-session')
-const bodyParser  = require('body-parser')
+const bodyParser = require('body-parser')
 
 let index = require('./routes/index');
 let loadData = require('./routes/loaddata')
@@ -19,12 +19,11 @@ let product = require('./routes/product')
 let displayImage = require('./routes/displayImage')
 let customer = require('./routes/customer')
 let ship = require('./routes/ship')
-
-const app = express();
+const app = express()
 
 // Enable parsing of requests for POST requests
-app.use(express.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.json())
+app.use(bodyParser.urlencoded({extended: true}))
 
 // This DB Config is accessible globally
 dbConfig = {
@@ -48,12 +47,19 @@ app.use(session({
     cookie: {
         httpOnly: false,
         secure: false,
-        maxAge: 60000,
+        maxAge: 6000000,
     }
 }))
 
 // Setting up the rendering engine
 app.engine('handlebars', exphbs());
+
+app.use(function (req, res, next) {
+    res.locals.session = req.session;
+    res.locals.body = req.body
+    next();
+});
+
 app.set('view engine', 'handlebars');
 
 // Setting up Express.js routes.
@@ -101,8 +107,23 @@ hbs.handlebars.registerHelper('displaymoney', function (number) {
     return Number(number).toFixed(2)
 })
 
-hbs.handlebars.registerHelper('getAddToCartLink', function(productId, productName, productPrice){
-    return ("addcart?id=" + productId + "&name=" +escape(productName) + "&price=" + productPrice )
+hbs.handlebars.registerHelper('getAddToCartLink', function (productId, productName, productPrice) {
+    return ("addcart?id=" + productId + "&name=" + escape(productName) + "&price=" + productPrice)
+})
+
+hbs.handlebars.registerHelper('login', function (session) {
+    if (session.authenticatedUser)
+        return '<a class="nav-link active nav-color" aria-current="page" href="/customer">' + session.authenticatedUser + '</a>'
+    else
+        return '<a class=\"nav-link active nav-color\" aria-current=\"page\" href=\"/login\">Login</a>'
+})
+
+hbs.handlebars.registerHelper('displayDate', function (date){
+    return new Date(date).toLocaleDateString("en-CA")
+})
+
+hbs.handlebars.registerHelper('getProductDescriptionLink', function(productId){
+    return ("product?id=" + productId)
 })
 
 // Starting our Express app

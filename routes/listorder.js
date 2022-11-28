@@ -5,8 +5,9 @@ require('moment');
 
 router.get('/', function (req, res) {
         (async function () {
+            let pool = false
             try {
-                let pool = await sql.connect(dbConfig);
+                pool = await sql.connect(dbConfig);
 
                 let sqlQuery = "SELECT ordersummary.orderId, ordersummary.customerId, customer.firstName, customer.lastName, ordersummary.totalAmount FROM ordersummary JOIN customer ON ordersummary.customerId = customer.customerId;";
 
@@ -25,8 +26,9 @@ router.get('/', function (req, res) {
                 res.render('listorder', {order : orders, products : products, title : "OnlyDucks Order List"})
             } catch (err) {
                 console.dir(err);
-                res.write(JSON.stringify(err));
                 res.end();
+            } finally {
+                pool.close()
             }
         })();
 });
