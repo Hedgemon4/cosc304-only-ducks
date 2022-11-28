@@ -46,14 +46,6 @@ router.get('/', async function (req, res) {
                     let orderProducts = results.recordset;
                     console.log(orderProducts);
 
-                    // creating new shipment record
-                    let createShipment = "INSERT INTO shipment (shipmentDate, warehouseId) VALUES (@todaysDate, 1);";
-                    await pool.request().input('todaysDate', sql.DateTime, moment().format('Y-MM-DD HH:mm:ss')).query(createShipment);
-
-                    let toBePrinted = await pool.request().query("SELECT * FROM shipment;");
-                    let shipments = toBePrinted.recordset;
-                    console.log(shipments);
-
                     // Verifying that there is sufficient quantity available in warehouse 1 for each item
                     // Cancelling transaction and rolling back if any item does not have sufficient inventory, updating inventory otherwise
                     let getQuantityInWarehouse = "SELECT productinventory.quantity FROM productinventory WHERE productinventory.productId = @productId AND productinventory.warehouseId = 1";
@@ -80,6 +72,11 @@ router.get('/', async function (req, res) {
                         await pool.request().input('newQty', sql.Int(), newQty).input('productId', sql.Int(), orderProduct.productId).query(updateInventory);
                         res.write("<p>Ordered product: " + orderProduct.productId + " Qty: " + orderProduct.quantity + " Previous inventory: " + quantityInWarehouse + " New inventory: " + newQty + "</p>");
                     }
+
+                    // creating new shipment record
+                    let createShipment = "INSERT INTO shipment (shipmentDate, warehouseId) VALUES (@todaysDate, 1);";
+                    await pool.request().input('todaysDate', sql.DateTime, moment().format('Y-MM-DD HH:mm:ss')).query(createShipment);
+
                     await transaction.commit();
                     res.write("<h2>Shipment successfully processed.</h2>")
                 } catch (err) {
