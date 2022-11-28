@@ -1,33 +1,38 @@
-<div style="margin:0 auto;text-align:center;display:inline">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/login.css">
+</head>
+<div class="login-flex">
 
-    <h3>Please Login to System</h3>
+    <h3 class="space login-items">Please Login to System</h3>
 
     {{#if loginMessage}}
-        <p>{{loginMessage}}</p>
+        <p class="space login-items">{{loginMessage}}</p>
     {{/if}}
 
     <br>
-    <form name="MyForm" method=post action="/validateLogin">
-        <table style="display:inline">
-            <tr>
+    <form name="MyForm" method=post action="/validateLogin" class="login-items">
+        <table>
+            <tr class="row">
                 <td>
-                    <div align="right">
-                        <font face="Arial, Helvetica, sans-serif" size="2">Username:</font>
+                    <div>
+                        Username:
                     </div>
                 </td>
-                <td><input type="text" name="username" size=10 maxlength=10></td>
+                <td><input type="text" name="username" size=10 maxlength=10 class="form-control" placeholder="Username"
+                           aria-label="Username"></td>
             </tr>
-            <tr>
-                <td>
-                    <div align="right">
-                        <font face="Arial, Helvetica, sans-serif" size="2">Password:</font>
+            <tr class="row">
+                <td class="col">
+                    <div>
+                        Password:
                     </div>
                 </td>
-                <td><input type="password" name="password" size=10 maxlength="10"></td>
+                <td><input type="password" name="password" size=10 maxlength="10" class="form-control"
+                           placeholder="Password" aria-label="Password"></td>
             </tr>
         </table>
-        <br />
-        <input class="submit" type="submit" name="Submit2" value="Log In">
+        <br/>
+        <input class="btn button-coloured" type="submit" name="Submit2" value="Log In">
     </form>
 
 </div>

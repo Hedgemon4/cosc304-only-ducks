@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 
-router.get('/', function (req, res, next) {
+router.get('/', function(req, res, next) {
     res.setHeader('Content-Type', 'text/html');
     let id = 0;
     if (req.query.id) id = req.query.id;
@@ -21,7 +21,6 @@ router.get('/', function (req, res, next) {
             res.render('productDetails', {id: id, product: product, title: "OnlyDucks Products"})
         } catch (err) {
             console.dir(err);
-            res.write(err + "")
             res.end();
         }
     })();
