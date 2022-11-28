@@ -18,7 +18,7 @@ services:
         ports:
             - 80:3000
     db:
-        image: mcr.microsoft.com/azure-sql-edge
+        image: mcr.microsoft.com/mssql/server:2019-latest
         container_name: mssql
         restart: always
         environment:
