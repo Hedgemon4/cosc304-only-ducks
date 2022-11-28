@@ -21,3 +21,10 @@
     flex-direction: row;
     flex-wrap: wrap;
 }
+
+.img {
+    float: left;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}

@@ -14,24 +14,22 @@
         <h2 class="page-space">All Products</h2>
     {{/if}}
     {{#if product}}
-        <table class="table page-space">
         <div class="list-product-flex">
             {{#each product}}
-                    <div class="card-group">
-                        <div class="card" style="width: 24rem;">
-                            <img src={{this.productImageURL}} class="card-img-top" alt="Ducks">
-                            <div class="card-body">
-                                <h5 class="card-title"><a href={{getProductDescriptionLink this.productId}}>{{this.productName}} </a></h5>
-                                <h6>${{displaymoney this.productPrice}}</h6>
-                                <p class="card-text">{{this.productDesc}}</p>
-                                <p><a href={{getAddToCartLink this.productId this.productName this.productPrice}} class="btn btn-primary">Add to Cart</a></p>
-                            </div>
+                <div class="card-group">
+                    <div class="card product-card" style="width: 24rem;">
+                        <img class="card-img-top img" alt="Ducks" src={{this.productImageURL}}>
+                        <div class="card-body">
+                            <h5 class="card-title"><a href={{getProductDescriptionLink
+                                    this.productId}}>{{this.productName}} </a></h5>
+                            <h6>${{displaymoney this.productPrice}}</h6>
+                            <p class="card-text">{{this.productDesc}}</p>
+                            <p><a href={{getAddToCartLink this.productId this.productName this.productPrice}}
+                                  class="btn btn-primary">Add to Cart</a></p>
                         </div>
                     </div>
-
-
+                </div>
             {{/each}}
         </div>
-        </table>
     {{/if}}
 </form>
