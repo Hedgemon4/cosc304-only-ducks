@@ -42,9 +42,8 @@ router.get('/', async function (req, res) {
 
                     // retrieving all items in order with given id
                     let getOrderProducts = "SELECT orderproduct.productId, orderproduct.quantity FROM orderproduct WHERE orderproduct.orderId = @orderId;"
-                    let results = await pool.request().input('orderId', sql.Int(), orderId).query(getOrderProducts);
+                    let results = await transaction.request().input('orderId', sql.Int(), orderId).query(getOrderProducts);
                     let orderProducts = results.recordset;
-                    console.log(orderProducts);
 
                     // Verifying that there is sufficient quantity available in warehouse 1 for each item
                     // Cancelling transaction and rolling back if any item does not have sufficient inventory, updating inventory otherwise
@@ -56,7 +55,7 @@ router.get('/', async function (req, res) {
                             continue
                         }
 
-                        let results2 = await pool.request().input('productId', sql.Int(), orderProduct.productId).query(getQuantityInWarehouse);
+                        let results2 = await transaction.request().input('productId', sql.Int(), orderProduct.productId).query(getQuantityInWarehouse);
                         let quantityInWarehouse = 0;
                         if (results2.recordset.length !== 0) {
                             quantityInWarehouse = results2.recordset[0].quantity;
@@ -69,13 +68,13 @@ router.get('/', async function (req, res) {
                         }
 
                         let newQty = quantityInWarehouse - orderProduct.quantity;
-                        await pool.request().input('newQty', sql.Int(), newQty).input('productId', sql.Int(), orderProduct.productId).query(updateInventory);
+                        await transaction.request().input('newQty', sql.Int(), newQty).input('productId', sql.Int(), orderProduct.productId).query(updateInventory);
                         res.write("<p>Ordered product: " + orderProduct.productId + " Qty: " + orderProduct.quantity + " Previous inventory: " + quantityInWarehouse + " New inventory: " + newQty + "</p>");
                     }
 
                     // creating new shipment record
                     let createShipment = "INSERT INTO shipment (shipmentDate, warehouseId) VALUES (@todaysDate, 1);";
-                    await pool.request().input('todaysDate', sql.DateTime, moment().format('Y-MM-DD HH:mm:ss')).query(createShipment);
+                    await transaction.request().input('todaysDate', sql.DateTime, moment().format('Y-MM-DD HH:mm:ss')).query(createShipment);
 
                     await transaction.commit();
                     res.write("<h2>Shipment successfully processed.</h2>")
