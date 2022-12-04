@@ -13,7 +13,7 @@ router.get('/', function (req, res) {
                 let results = await pool.request().query(sqlQuery)
                 let sales = results.recordset
 
-                let sqlQuery2 = "SELECT product.productName, SUM(orderproduct.quantity) AS totalQuantity, COUNT(orderproduct.productId) AS numOrders FROM product JOIN orderproduct ON product.productId = orderproduct.productId GROUP BY product.productName ORDER BY totalQuantity DESC;"
+                let sqlQuery2 = "SELECT ordersummary.orderId, COUNT(orderproduct.productId) AS totalQuantity, SUM(orderproduct.price) AS totalAmount FROM ordersummary JOIN orderproduct ON ordersummary.orderId = orderproduct.orderId GROUP BY ordersummary.orderId"
                 let results2 = await pool.request().query(sqlQuery2)
                 let sales2 = results2.recordset
 

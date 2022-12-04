@@ -21,21 +21,21 @@
         {{/each}}
         </tbody>
     </table>
-    <h2>Sales per product</h2>
+    <h2>Total Sales Per Order</h2>
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Product Name</th>
-            <th scope="col">Times Sold</th>
-            <th scope="col">Number of Orders</th>
+            <th scope="col">Order Id</th>
+            <th scope="col">Number of Products Sold</th>
+            <th scope="col">Total Amount</th>
         </tr>
         </thead>
         <tbody>
         {{#each productSales}}
             <tr>
-                <td>{{this.productName}}</td>
+                <td>{{this.orderId}}</td>
                 <td>{{this.totalQuantity}}</td>
-                <td>{{this.numOrders}}</td>
+                <td>{{this.totalAmount}}</td>
             </tr>
         {{/each}}
         </tbody>
