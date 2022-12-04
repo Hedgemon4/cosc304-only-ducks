@@ -24,17 +24,28 @@ router.get('/', function (req, res) {
             ps1.input('param2', sql.VarChar(40))
 
             let results
+            let specifyCat
             if (category === 'All') {
                 await ps.prepare("SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL FROM product WHERE product.productName LIKE '%' + @param + '%'")
                 results = await ps.execute({param: name})
+                // this is for displaying later
+                category = 'Products';
+                specifyCat = '';
             } else {
                 await ps1.prepare("SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL FROM product WHERE product.productName LIKE '%' + @param + '%' AND product.categoryId = (SELECT category.categoryId FROM category WHERE category.categoryName = @param2);")
                 results = await ps1.execute({param: name, param2: category})
+                // this is for displaying later
+                specifyCat = 'in ' + category;
             }
 
             let product = results.recordset
-
-            res.render('listprod', {name: name, product: product, title: "OnlyDucks Products"})
+            res.render('listprod', {
+                name: name,
+                category: category,
+                specifyCat: specifyCat,
+                product: product,
+                title: "OnlyDucks Products"
+            })
 
         } catch (err) {
             console.dir(err);

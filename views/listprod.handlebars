@@ -20,9 +20,9 @@
         <input type="reset" class="btn btn-primary" value="Reset">
     </div>
     {{#if name}}
-        <h2 class="page-space">Products containing '{{name}}'</h2>
+        <h2 class="page-space">Products {{specifyCat}} containing '{{name}}'</h2>
     {{else}}
-        <h2 class="page-space">All Products</h2>
+        <h2 class="page-space">All {{category}}</h2>
     {{/if}}
     {{#if product}}
         <div class="list-product-flex">
