@@ -21,5 +21,24 @@
         {{/each}}
         </tbody>
     </table>
+    <h2>Sales per product</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Product Name</th>
+            <th scope="col">Times Sold</th>
+            <th scope="col">Number of Orders</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each productSales}}
+            <tr>
+                <td>{{this.productName}}</td>
+                <td>{{this.totalQuantity}}</td>
+                <td>{{this.numOrders}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
 </div>
 </body>
