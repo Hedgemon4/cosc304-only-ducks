@@ -66,6 +66,7 @@ router.post('/save', function (req, res) {
     let province = req.body.province
     let postalCode = req.body.postalCode
     let country = req.body.country;
+    let customerId = req.session.customerId;
 
     (async function () {
         let pool = false
@@ -84,14 +85,11 @@ router.post('/save', function (req, res) {
             ps.input('country', sql.VarChar(40))
             ps.input('userid', sql.VarChar(20))
             ps.input('password', sql.VarChar(30))
-
-            ps.input('olduserid', sql.VarChar(30))
+            ps.input('customerId', sql.VarChar(30))
 
             await ps.prepare(
-                "UPDATE CUSTOMER SET firstName = @firstName, lastName = @lastName, email = @email, phonenum = @phonenum, address = @address, city = @city, state = @state, postalCode = @postalCode, country = @country, userid = @userid, password = @password OUTPUT INSERTED.* WHERE userid = @olduserid"
+                "UPDATE CUSTOMER SET firstName = @firstName, lastName = @lastName, email = @email, phonenum = @phonenum, address = @address, city = @city, state = @state, postalCode = @postalCode, country = @country, userid = @userid, password = @password OUTPUT INSERTED.* WHERE customerId = @customerId"
             )
-
-            let olduserid = req.session.authenticatedUser
 
             let results = await ps.execute({
                 firstName: firstName,
@@ -105,12 +103,10 @@ router.post('/save', function (req, res) {
                 country: country,
                 userid: username,
                 password: password,
-                olduserid: olduserid
+                customerId: customerId
             })
 
             let customer = results.recordset[0]
-            console.log(results)
-            console.log(customer)
 
             req.session.authenticatedUser = customer.userid
             req.session.customerMessage = 'Account updated successfully!'
