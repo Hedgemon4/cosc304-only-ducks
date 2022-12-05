@@ -20,6 +20,13 @@ router.get('/', function (req, res) {
 
             let product = result.recordset
 
+            const psReviews = new sql.PreparedStatement(pool)
+            psReviews.input('param', sql.VarChar(40))
+            await psReviews.prepare("SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL, productImage  FROM product WHERE product.productId = @param")
+            let reviewsResult = await psReviews.execute({param: id})
+
+            let reviews = reviewsResult.recordset
+
             res.render('productDetails', {id: id, product: product, title: "OnlyDucks Products"})
         } catch (err) {
             console.dir(err)
