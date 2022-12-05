@@ -115,7 +115,7 @@ hbs.handlebars.registerHelper('login', function (session) {
     if (session.authenticatedUser)
         return '<a class="nav-link active nav-color" aria-current="page" href="/customer">' + session.authenticatedUser + '</a>'
     else
-        return '<a class=\"nav-link active nav-color\" aria-current=\"page\" href=\"/login\">Login</a>'
+        return '<a class=\"nav-link active nav-color\" aria-current=\"page\" href="/login">Login</a>'
 })
 
 hbs.handlebars.registerHelper('displayDate', function (date){
@@ -124,6 +124,10 @@ hbs.handlebars.registerHelper('displayDate', function (date){
 
 hbs.handlebars.registerHelper('getProductDescriptionLink', function(productId){
     return ("product?id=" + productId)
+})
+
+hbs.handlebars.registerHelper('displayAdmin', function (session){
+    return session.authenticatedUser
 })
 
 // Starting our Express app
