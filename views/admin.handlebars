@@ -50,15 +50,21 @@
 <script>
     const ctx = document.getElementById('myChart');
 
-    console.log(ctx)
+    var label = [];
+    var data = [];
+
+        {{#each productSales}}
+        label.push({{this.orderId}});
+        data.push({{this.totalAmount}})
+        {{/each}}
 
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: label,
             datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                label: 'Amount per order',
+                data: data,
                 borderWidth: 1
             }]
         },
