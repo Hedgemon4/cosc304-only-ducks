@@ -17,6 +17,7 @@ router.get('/', function (req, res) {
         try {
             pool = await sql.connect(dbConfig)
 
+            let sqlQuery = "SELECT productImage FROM product WHERE product.productId = id";
             const ps = new sql.PreparedStatement(pool)
             ps.input('idParam', sql.Int)
             await ps.prepare("SELECT productImage FROM product WHERE product.productId = @idParam")
