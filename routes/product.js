@@ -22,12 +22,13 @@ router.get('/', function (req, res) {
 
             const psReviews = new sql.PreparedStatement(pool)
             psReviews.input('param', sql.VarChar(40))
-            await psReviews.prepare("SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL, productImage  FROM product WHERE product.productId = @param")
+            await psReviews.prepare("SELECT review.reviewId, review.reviewRating, review.reviewDate, review.customerId, review.productId, review.reviewComment, customer.firstName, customer.lastName FROM review JOIN customer ON review.customerId = customer.customerId WHERE review.productId = @param")
+
             let reviewsResult = await psReviews.execute({param: id})
 
             let reviews = reviewsResult.recordset
 
-            res.render('productDetails', {id: id, product: product, title: "OnlyDucks Products"})
+            res.render('productDetails', {id: id, product: product, reviews: reviews, title: "OnlyDucks Products"})
         } catch (err) {
             console.dir(err)
             res.end()

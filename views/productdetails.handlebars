@@ -61,5 +61,19 @@
 
     <a class="btn button-coloured">Submit Review</a>
 
+    {{#if reviews}}
+        {{#each reviews}}
+            <div class="card-group">
+                <div class="card product-card" style="width: 50rem;">
+                    <div class="card-body">
+                        <h5 class="card-title"><a>{{this.firstName}} {{this.lastName}} reviewed this project on {{displayDate this.reviewDate}}</a></h5>
+                        <h6>{{this.reviewRating}}</h6>
+                        <p class="card-text">{{this.productDesc}}</p>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    {{/if}}
+
 </div>
 </body>

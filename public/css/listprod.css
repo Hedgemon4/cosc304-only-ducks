@@ -24,7 +24,7 @@
 
 .img {
     float: left;
-    width: 200px;
-    height: 200px;
+    width: 24rem;
+    height: 500px;
     object-fit: cover;
 }
