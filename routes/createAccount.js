@@ -19,20 +19,6 @@ async function createAccount(req, res) {
         !req.body.email || !req.body.password || !req.body.address || !req.body.phonenum ||
         !req.body.city || !req.body.province || !req.body.postalCode || !req.body.country) {
         req.session.loginMessage = "There was data missing from the account creation form. Please try again."
-
-        console.log(req.body.firstName)
-        console.log(req.body.lastName)
-        console.log(req.body.username)
-        console.log(req.body.email)
-        console.log(req.body.password)
-        console.log(req.body.address)
-        console.log(req.body.phonenum)
-        console.log(req.body.city)
-        console.log(req.body.province)
-        console.log(req.body.postalCode)
-        console.log(req.body.country)
-
-
         return false;
     }
 
@@ -47,6 +33,46 @@ async function createAccount(req, res) {
     let province = req.body.province
     let postalCode = req.body.postalCode
     let country = req.body.country
+
+    await (async function () {
+        let pool = false
+        try {
+            pool = await sql.connect(dbConfig);
+            const ps = new sql.PreparedStatement(pool)
+            ps.input('userid', sql.VarChar(20))
+            await ps.prepare("SELECT userid FROM customer WHERE userid = @userid")
+            let r = await ps.execute({userid: username})
+
+            let user = r.recordset
+
+            let form = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phonenum: phonenum,
+                address: address,
+                city: city,
+                province: province,
+                postalCode: postalCode,
+                country: country,
+                password: password
+            }
+
+            if (user[0]) {
+                res.render('signup', {
+                    title: 'OnlyDucks Signup',
+                    form: form,
+                    error: 'This username is already taken. Please choose another.'
+                })
+            }
+
+        } catch (err) {
+            console.dir(err)
+            return false;
+        } finally {
+            pool.close()
+        }
+    })()
 
     let createAccount = await (async function () {
         let pool = false
