@@ -2,72 +2,63 @@
     <link rel="stylesheet" type="text/css" href="/css/signup.css">
 </head>
 <body>
-<h1 class="m-lg-3">Signup</h1>
-{{#if error}}
-    <h2 class="m-lg-3">{{error}}</h2>
-{{/if}}
-<form name="SignupForm" method=post action="/createAccount" class="container">
+<h1 class="space">Edit Account</h1>
+<form name="updateForm" method=post action="/editAccount/save" class="container">
     <div class="row mt-3">
         <div class="form-group col-md-4">
             <label for="firstName">First Name</label>
             <input type="text" name="firstName" class="form-control" id="firstName" placeholder="First name"
-                   value="{{form.firstName}}" required>
+                   value="{{customer.firstName}}" required>
         </div>
         <div class="form-group col-md-4">
             <label for="lastName">Last Name</label>
             <input type="text" name="lastName" class="form-control" id="lastName" placeholder="Last name"
-                   value="{{form.lastName}}" required>
+                   value="{{customer.lastName}}" required>
         </div>
     </div>
     <div class="row mt-3">
         <div class="form-group col-md-4">
             <label for="userName">Username</label>
-            <input type="text" name="username" class="form-control" id="userName" placeholder="Username" required>
+            <input type="text" name="username" class="form-control" id="userName" placeholder="Username"
+                   value="{{customer.userid}}" required>
         </div>
         <div class="form-group col-md-4">
             <label for="email">Email address</label>
             <input type="email" name="email" class="form-control" id="email" placeholder="Enter email"
-                   value="{{form.email}}" required>
+                   value="{{customer.email}}" required>
         </div>
     </div>
     <div class="row mt-3">
         <div class="form-group col-md-4">
             <label for="password">Password</label>
             <input type="password" name="password" class="form-control" id="password" placeholder="Enter password"
-                   value="{{form.password}}" required>
+                   value="{{customer.password}}" required>
         </div>
         <div class="form-group col-md-4">
             <label for="phonenum">Phone Number</label>
             <input type="tel" name="phonenum" class="form-control" id="phonenum" placeholder="Enter phone number"
-                   value="{{form.phonenum}}" required>
+                   value="{{customer.phonenum}}" required>
         </div>
     </div>
     <div class="row mt-3">
         <div class="form-group col-md-8">
             <label for="address">Address</label>
             <input type="text" name="address" class="form-control" id="address" placeholder="1234 Main Street"
-                   value="{{form.address}}" required>
+                   value="{{customer.address}}" required>
         </div>
     </div>
     <div class="row mt-3">
         <div class="form-group col-md-4">
             <label for="city">City</label>
-            <input type="text" name="city" class="form-control" id="city" placeholder="City" value="{{form.city}}"
+            <input type="text" name="city" class="form-control" id="city" placeholder="City" value="{{customer.city}}"
                    required>
         </div>
         <div class="form-group col-md-4">
             <label for="province">Province</label>
             <select id="province" name="province" class="form-control" required>
-                {{#if form}}
-                    {{#each provinces}}
-                        <option {{selected this ../customer.state}}>{{this}}</option>
-                    {{/each}}
-                {{else}}
-                    <option selected disabled value="">Choose...</option>
-                    {{#each provinces}}
-                        <option>{{this}}</option>
-                    {{/each}}
-                {{/if}}
+                {{#each provinces}}
+                    <option {{selected this ../customer.state}}>{{this}}</option>
+                {{/each}}
             </select>
         </div>
     </div>
@@ -75,23 +66,19 @@
         <div class="form-group col-md-4">
             <label for="postalCode">Postal Code</label>
             <input type="text" name="postalCode" class="form-control" id="postalCode" placeholder="Postal Code"
-                   value="{{form.postalCode}}" required>
+                   value="{{customer.postalCode}}" required>
         </div>
         <div class="form-group col-md-4">
             <label for="country">Country</label>
             <select id="country" name="country" class="form-control" required>
-                {{#if form}}
                     <option selected>Canada</option>
-                {{else}}
-                    <option selected disabled value="">Choose...</option>
-                    <option>Canada</option>
-                {{/if}}
             </select>
         </div>
     </div>
     <div class="row mt-3">
         <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <a href="/customer" class="btn btn-primary button-coloured">Cancel</a>
+            <button type="submit" class="btn btn-primary button-coloured">Save</button>
         </div>
     </div>
 </form>

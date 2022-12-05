@@ -11,3 +11,8 @@
 .table-item{
     max-width: 500px;
 }
+
+.button-box{
+    display: flex;
+    flex-direction: row;
+}

@@ -58,10 +58,27 @@ async function createAccount(req, res) {
                 password: password
             }
 
+            let provinces = [
+                'Alberta',
+                'British Columbia',
+                'Manitoba',
+                'New Brunswick',
+                'Newfoundland and Labrador',
+                'Northwest Territories',
+                'Nova Scotia',
+                'Nunavut',
+                'Ontario',
+                'Prince Edward Island',
+                'Quebec',
+                'Saskatchewan',
+                'Yukon'
+            ]
+
             if (user[0]) {
                 res.render('signup', {
                     title: 'OnlyDucks Signup',
                     form: form,
+                    provinces: provinces,
                     error: 'This username is already taken. Please choose another.'
                 })
             }

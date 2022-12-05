@@ -21,6 +21,7 @@ let customer = require('./routes/customer')
 let ship = require('./routes/ship')
 let signup = require('./routes/signup')
 let createAccount = require('./routes/createAccount')
+let editAccount = require('./routes/editAccount')
 const app = express()
 
 // Enable parsing of requests for POST requests
@@ -85,6 +86,7 @@ app.use('/displayImage', displayImage)
 app.use('/customer', customer)
 app.use('/ship', ship)
 app.use('/signup', signup)
+app.use('/editAccount', editAccount)
 app.use(express.static(__dirname + '/public'))
 
 // Handlebar helpers
@@ -131,6 +133,14 @@ hbs.handlebars.registerHelper('getProductDescriptionLink', function(productId){
 
 hbs.handlebars.registerHelper('displayAdmin', function (session){
     return session.authenticatedUser
+})
+
+hbs.handlebars.registerHelper('selected', function(option, value){
+    if (option === value) {
+        return 'selected';
+    } else {
+        return ''
+    }
 })
 
 // Starting our Express app

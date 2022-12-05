@@ -1,0 +1,18 @@
+.space{
+    margin: 1rem;
+}
+
+.button-coloured {
+    background-color: #e55701;
+    color: #fff780;
+}
+
+.button-coloured:hover{
+    background-color: #cd4e01;
+    color: #fff780;
+}
+
+.card-body{
+    background-color: #fdffc5;
+    color: #e55701
+}
