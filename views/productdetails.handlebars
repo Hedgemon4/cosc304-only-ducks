@@ -5,7 +5,7 @@
 <div class="product-flex-col">
     {{#if product}}
         {{#each product}}
-            <div class="product-flex-row">
+            <div class="product-flex-row-large-margin">
                 <div class="product-flex-col-half">
 
                     <div class="product-flex-row"><h1 class="product-title"><b>{{this.productName}}</b></h1></div>
@@ -29,5 +29,37 @@
             </div>
         {{/each}}
     {{/if}}
+
+    <h1>Leave a review!</h1>
+    <h5 class="light-text">How would you rate this duck out of 5?</h5>
+    <div class="product-flex-row-small-margin">
+        <div class="form-check form-check-inline">
+            <input class="radio-input" type="radio" name="inlineRadioOptions" id="star1" value="option1">
+            <label class="form-check-label" for="star1">1</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="radio-input" type="radio" name="inlineRadioOptions" id="star2" value="option2">
+            <label class="form-check-label" for="star2">2</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="radio-input" type="radio" name="inlineRadioOptions" id="star3" value="option2">
+            <label class="form-check-label" for="star3">3</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="radio-input" type="radio" name="inlineRadioOptions" id="star4" value="option2">
+            <label class="form-check-label" for="star4">4</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="radio-input" type="radio" name="inlineRadioOptions" id="star5" value="option2">
+            <label class="form-check-label" for="star5">5</label>
+        </div>
+
+    </div>
+
+    <textarea class="form-control review-input" id="reviewInput" rows="5"
+              placeholder="Tell others about your experience!"></textarea>
+
+    <a class="btn button-coloured">Submit Review</a>
+
 </div>
 </body>
