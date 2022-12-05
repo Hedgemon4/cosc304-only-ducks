@@ -2,28 +2,32 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 
-router.get('/', function(req, res, next) {
-    res.setHeader('Content-Type', 'text/html');
-    (async function() {
+router.get('/', function (req, res) {
+    let id = 0;
+    if (req.query.id) {
+        id = req.query.id
+    }
+
+    (async function () {
+        let pool = false
         try {
-            let pool = await sql.connect(dbConfig);
+            pool = await sql.connect(dbConfig)
 
-	// Get product name to search for
-	// TODO: Retrieve and display info for the product
+            const ps = new sql.PreparedStatement(pool)
+            ps.input('param', sql.VarChar(40))
+            await ps.prepare("SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL, productImage  FROM product WHERE product.productId = @param")
+            let result = await ps.execute({param: id})
 
-	// TODO: If there is a productImageURL, display using IMG tag
+            let product = result.recordset
 
-	// TODO: Retrieve any image stored directly in database. Note: Call displayImage.jsp with product id as parameter.
-
-	// TODO: Add links to Add to Cart and Continue Shopping
-
+            res.render('productDetails', {id: id, product: product, title: "OnlyDucks Products"})
+        } catch (err) {
+            console.dir(err)
             res.end()
-        } catch(err) {
-            console.dir(err);
-            res.write(err + "")
-            res.end();
+        } finally {
+            pool.close()
         }
-    })();
-});
+    })()
+})
 
-module.exports = router;
+module.exports = router

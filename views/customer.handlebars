@@ -1,0 +1,57 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/customer.css">
+</head>
+<body>
+<div class="customer-display space">
+    <h1 class="space">Customer Profile For {{customer.firstname}}</h1>
+    <table class="table table-item space">
+        <tbody>
+        <tr>
+            <th scope="row">ID</th>
+            <td>{{customer.customerId}}</td>
+        </tr>
+        <tr>
+            <th scope="row">First Name</th>
+            <td>{{customer.firstName}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Last Name</th>
+            <td>{{customer.lastName}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Email</th>
+            <td>{{customer.email}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Phone</th>
+            <td>{{customer.phonenum}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Address</th>
+            <td>{{customer.address}}</td>
+        </tr>
+        <tr>
+            <th scope="row">City</th>
+            <td>{{customer.city}}</td>
+        </tr>
+        <tr>
+            <th scope="row">State</th>
+            <td>{{customer.state}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Postal Code</th>
+            <td>{{customer.postalCode}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Country</th>
+            <td>{{customer.country}}</td>
+        </tr>
+        <tr>
+            <th scope="row">User ID</th>
+            <td>{{customer.userid}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<a class="btn btn-primary space" href="/logout" role="button">Logout</a>
+</body>
