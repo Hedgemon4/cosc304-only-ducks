@@ -30,9 +30,12 @@ router.get('/', async function (req, res) {
 
     let canReview = true
 
+    let hasBought = true
+
     if (isPositiveInteger(cId)) {
         isValid = await idInDatabase()
         canReview = await idHasReviewed(cId, id)
+        hasBought = await idHasBought(cId, id)
     }
 
     function isPositiveInteger(str) {
@@ -49,6 +52,43 @@ router.get('/', async function (req, res) {
             let sqlQuery = "SELECT customer.firstName, customer.lastName FROM customer WHERE customer.customerId = @customerId";
             let result = await pool.request().input('customerId', sql.Int(), cId).query(sqlQuery);
             return result.recordset.length !== 0;
+        } catch (err) {
+            console.dir(err);
+            res.end()
+        }
+    }
+
+    async function idHasBought(custId, prodId) {
+        let sqlQuery;
+        try {
+            if (custId !== 0) {
+
+                let pool = await sql.connect(dbConfig);
+
+                const findOrders = new sql.PreparedStatement(pool)
+                sqlQuery = "SELECT * FROM orderSummary JOIN orderProduct ON orderSummary.orderId = orderProduct.orderId WHERE customerId = @customerId AND productId = @productId"
+
+
+                findOrders.input('customerId', sql.Int)
+                findOrders.input('productId', sql.Int)
+
+                await findOrders.prepare(sqlQuery)
+
+                let results = await findOrders.execute({
+                    customerId: custId,
+                    productId: prodId
+                })
+
+                let orders = results.recordset
+
+                if (orders[0])
+                    return true
+                else
+                    return false
+            } else {
+                return false
+            }
+
         } catch (err) {
             console.dir(err);
             res.end()
@@ -75,8 +115,6 @@ router.get('/', async function (req, res) {
                     customerId: custId,
                     productId: prodId
                 })
-
-                console.log(results)
 
                 let reviews = results.recordset
 
@@ -113,7 +151,7 @@ router.get('/', async function (req, res) {
             let reviewsResult = await psReviews.execute({param: id})
             let reviews = reviewsResult.recordset
 
-            if (isValid && canReview && cId !== 0) {
+            if (isValid && canReview && hasBought && cId !== 0) {
 
                 const addReview = new sql.PreparedStatement(pool)
                 sqlQuery = "INSERT INTO review (reviewRating, reviewDate, customerId, productId, reviewComment) VALUES (@reviewRating, @reviewDate, @customerId, @productId, @reviewComment)"
@@ -143,6 +181,7 @@ router.get('/', async function (req, res) {
                     reviews: reviews,
                     isValid: isValid,
                     canReview: canReview,
+                    hasBought: hasBought,
                     title: "OnlyDucks Products"
                 })
             }
