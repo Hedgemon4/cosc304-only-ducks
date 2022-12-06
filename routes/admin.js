@@ -13,13 +13,7 @@ router.get('/', function (req, res) {
                 let results = await pool.request().query(sqlQuery)
                 let sales = results.recordset
 
-                let sqlQuery2 = "SELECT ordersummary.orderId, COUNT(orderproduct.productId) AS totalQuantity, SUM(orderproduct.price) AS totalAmount FROM ordersummary JOIN orderproduct ON ordersummary.orderId = orderproduct.orderId GROUP BY ordersummary.orderId"
-                let results2 = await pool.request().query(sqlQuery2)
-                let sales2 = results2.recordset
-
-                console.log(sales2)
-
-                res.render('admin', {dailySales: sales, productSales: sales2, title: "OnlyDucks Administrator Panel"})
+                res.render('admin', {dailySales: sales, title: "OnlyDucks Administrator Panel"})
             } catch (err) {
                 console.dir(err)
                 res.end()
