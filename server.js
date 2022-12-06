@@ -22,6 +22,7 @@ let ship = require('./routes/ship')
 let signup = require('./routes/signup')
 let createAccount = require('./routes/createAccount')
 let editAccount = require('./routes/editAccount')
+let viewOrders = require('./routes/viewOrders')
 const app = express()
 
 // Enable parsing of requests for POST requests
@@ -87,6 +88,7 @@ app.use('/customer', customer)
 app.use('/ship', ship)
 app.use('/signup', signup)
 app.use('/editAccount', editAccount)
+app.use('/viewOrders', viewOrders)
 app.use(express.static(__dirname + '/public'))
 
 // Handlebar helpers
