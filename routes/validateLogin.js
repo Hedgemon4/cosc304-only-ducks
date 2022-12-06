@@ -11,7 +11,11 @@ router.post('/', function (req, res) {
         let authenticatedUser = await validateLogin(req);
         if (authenticatedUser) {
             req.session.authenticatedUser = authenticatedUser
-            res.redirect("/");
+            if (req.session.loginRedirect) {
+                req.session.loginRedirect = false
+                res.redirect("/checkout");
+            } else
+                res.redirect("/");
         } else {
             res.redirect("/login")
         }
@@ -44,9 +48,10 @@ async function validateLogin(req) {
                 req.session.customerId = user[0].customerId
                 req.session.isAdmin = user[0].isAdmin
                 return username
+            } else {
+                req.session.loginMessage = "Invalid login provided. Please try again."
+                return false
             }
-
-            return false;
         } catch (err) {
             console.dir(err)
             return false;

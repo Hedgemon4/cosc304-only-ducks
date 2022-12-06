@@ -31,10 +31,15 @@ router.get('/', function (req, res) {
                 await ps.prepare("SELECT * FROM customer WHERE userid = @userId")
                 let results = await ps.execute({userId: username})
                 let customer = results.recordset[0]
+                let message = false
+                if (req.session.editMessage) {
+                    message = req.session.editMessage
+                }
                 res.render('editAccount',
                     {
                         customer: customer,
                         provinces: provinces,
+                        message: message,
                         title: "Edit Account " + username
                     })
             } catch (err) {
@@ -69,57 +74,91 @@ router.post('/save', function (req, res) {
     let customerId = req.session.customerId;
 
     (async function () {
-        let pool = false
-        try {
-            pool = await sql.connect(dbConfig);
+        let validusername = await validUserName(username);
+        if (validusername) {
+            req.session.usernameTaken = false
+            let pool = false
+            try {
+                pool = await sql.connect(dbConfig);
 
-            const ps = new sql.PreparedStatement(pool)
-            ps.input('firstName', sql.VarChar(40))
-            ps.input('lastName', sql.VarChar(40))
-            ps.input('email', sql.VarChar(50))
-            ps.input('phonenum', sql.VarChar(20))
-            ps.input('address', sql.VarChar(50))
-            ps.input('city', sql.VarChar(40))
-            ps.input('state', sql.VarChar(20))
-            ps.input('postalCode', sql.VarChar(20))
-            ps.input('country', sql.VarChar(40))
-            ps.input('userid', sql.VarChar(20))
-            ps.input('password', sql.VarChar(30))
-            ps.input('customerId', sql.VarChar(30))
+                const ps = new sql.PreparedStatement(pool)
+                ps.input('firstName', sql.VarChar(40))
+                ps.input('lastName', sql.VarChar(40))
+                ps.input('email', sql.VarChar(50))
+                ps.input('phonenum', sql.VarChar(20))
+                ps.input('address', sql.VarChar(50))
+                ps.input('city', sql.VarChar(40))
+                ps.input('state', sql.VarChar(20))
+                ps.input('postalCode', sql.VarChar(20))
+                ps.input('country', sql.VarChar(40))
+                ps.input('userid', sql.VarChar(20))
+                ps.input('password', sql.VarChar(30))
+                ps.input('customerId', sql.VarChar(30))
 
-            await ps.prepare(
-                "UPDATE CUSTOMER SET firstName = @firstName, lastName = @lastName, email = @email, phonenum = @phonenum, address = @address, city = @city, state = @state, postalCode = @postalCode, country = @country, userid = @userid, password = @password OUTPUT INSERTED.* WHERE customerId = @customerId"
-            )
+                await ps.prepare(
+                    "UPDATE CUSTOMER SET firstName = @firstName, lastName = @lastName, email = @email, phonenum = @phonenum, address = @address, city = @city, state = @state, postalCode = @postalCode, country = @country, userid = @userid, password = @password OUTPUT INSERTED.* WHERE customerId = @customerId"
+                )
 
-            let results = await ps.execute({
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                phonenum: phonenum,
-                address: address,
-                city: city,
-                state: province,
-                postalCode: postalCode,
-                country: country,
-                userid: username,
-                password: password,
-                customerId: customerId
-            })
+                let results = await ps.execute({
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    phonenum: phonenum,
+                    address: address,
+                    city: city,
+                    state: province,
+                    postalCode: postalCode,
+                    country: country,
+                    userid: username,
+                    password: password,
+                    customerId: customerId
+                })
 
-            let customer = results.recordset[0]
+                let customer = results.recordset[0]
 
-            req.session.authenticatedUser = customer.userid
-            req.session.customerMessage = 'Account updated successfully!'
+                req.session.authenticatedUser = customer.userid
+                req.session.customerMessage = 'Account updated successfully!'
 
-            res.redirect('/customer')
+                res.redirect('/customer')
 
-        } catch (err) {
-            console.dir(err)
-            res.end()
-        } finally {
-            pool.close()
+            } catch (err) {
+                console.dir(err)
+                res.end()
+            } finally {
+                pool.close()
+            }
+        } else {
+            req.session.editMessage = 'This username is already taken. Please choose another.'
+            res.redirect('/editAccount')
         }
     })()
 })
+
+async function validUserName(username) {
+    let pool = false
+    let validUserName = false
+    try {
+        pool = await sql.connect(dbConfig);
+        const ps = new sql.PreparedStatement(pool)
+        ps.input('userid', sql.VarChar(20))
+        await ps.prepare("SELECT userid FROM customer WHERE userid = @userid")
+        let r = await ps.execute({userid: username})
+
+        let user = r.recordset
+
+        if (user[0]) {
+            validusername = false
+        } else {
+            validUserName = true
+        }
+
+    } catch (err) {
+        console.dir(err)
+        return false;
+    } finally {
+        pool.close()
+    }
+    return validUserName
+}
 
 module.exports = router
