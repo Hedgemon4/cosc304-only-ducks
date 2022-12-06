@@ -25,6 +25,7 @@ CREATE TABLE customer (
     country             VARCHAR(40),
     userid              VARCHAR(20),
     password            VARCHAR(30),
+    isAdmin             BIT DEFAULT 0
     PRIMARY KEY (customerId)
 );
 
@@ -187,6 +188,7 @@ INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state
 INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Candace', 'Cole', 'cole@charity.org', '333-444-5555', '333 Central Crescent', 'Toronto', 'Ontario', 'M5S 2C5', 'Canada', 'candace' , 'password');
 INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Darren', 'Doe', 'oe@doe.com', '250-807-2222', '444 Dover Lane', 'Kelowna', 'BC', 'V1V 2X9', 'Canada', 'darren' , 'pw');
 INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Elizabeth', 'Elliott', 'engel@uiowa.edu', '555-666-7777', '555 Everwood Street', 'Montreal', 'Quebec', '52241', 'Canada', 'beth' , 'test');
+INSERT INTO customer (userid, password, isAdmin) VALUES ('admin1', 'secure123', 1)
 
 -- Order 1 can be shipped as have enough inventory
 DECLARE @orderId int

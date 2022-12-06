@@ -134,7 +134,7 @@ hbs.handlebars.registerHelper('getProductDescriptionLink', function(productId){
 })
 
 hbs.handlebars.registerHelper('displayAdmin', function (session){
-    return session.authenticatedUser
+    return session.isAdmin
 })
 
 hbs.handlebars.registerHelper('selected', function(option, value){

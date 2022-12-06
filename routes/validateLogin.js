@@ -34,14 +34,15 @@ async function validateLogin(req) {
             const ps = new sql.PreparedStatement(pool)
             ps.input('userId', sql.VarChar(20))
             ps.input('password', sql.VarChar(30))
-            await ps.prepare("SELECT userid, password, customerId FROM customer WHERE userid = @userId AND password = @password")
+            await ps.prepare("SELECT userid, password, customerId, isAdmin FROM customer WHERE userid = @userId AND password = @password")
 
             let results = await ps.execute({userId: username, password: password})
 
             let user = results.recordset
 
-            if (user[0]){
+            if (user[0]) {
                 req.session.customerId = user[0].customerId
+                req.session.isAdmin = user[0].isAdmin
                 return username
             }
 
