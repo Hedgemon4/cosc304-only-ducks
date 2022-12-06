@@ -27,7 +27,7 @@
 
 .product-flex-row-buttons{
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
     flex-direction: row;
     width: 100%;
@@ -51,13 +51,13 @@
 }
 
 .review-input{
-    max-width: 60%;
+    max-width: 100%;
     margin: 0 0 1rem 0;
 }
 
 .product-flex-row-text{
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: flex-end;
     flex-direction: row;
     width: 100%;
@@ -65,7 +65,7 @@
 
 .product-flex-row-text-top{
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: flex-start;
     flex-direction: row;
     width: 100%;
@@ -95,6 +95,7 @@
     align-items: center;
     flex-direction: column;
     flex-wrap: wrap;
+    width: 70%;
 }
 
 .product-title{
