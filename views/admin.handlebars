@@ -29,7 +29,7 @@
         <tr>
             <th scope="col">Product ID</th>
             <th scope="col">Product Name</th>
-
+            <th scope="col">Product Inventory</th>
             <th scope="col">Warehouse ID</th>
             <th scope="col">Warehouse Name</th>
         </tr>
@@ -37,13 +37,14 @@
         <tbody>
         {{#each inventoriesByWarehouse}}
             <tr>
-                <td>{{ this.productidd}}</td>
-                <td>{{this.productnamee}}</td>
-                <td>{{this.wIdd}}</td>
-                <td>{{this.wNamee}}</td>
+                <td>{{ this.productid}}</td>
+                <td>{{this.productname}}</td>
+                <td>{{this.quantity}}</td>
+                <td>{{this.wId}}</td>
+                <td>{{this.wName}}</td>
             </tr>
         {{/each}}
         </tbody>
-    </table>>
+    </table>
     </div>
 </body>
