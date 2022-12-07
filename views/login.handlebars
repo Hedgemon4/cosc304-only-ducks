@@ -2,13 +2,12 @@
     <link rel="stylesheet" type="text/css" href="/css/login.css">
 </head>
 <div class="login-flex">
-
     <h3 class="space login-items">Please Login to System</h3>
-
     {{#if loginMessage}}
-        <p class="space login-items">{{loginMessage}}</p>
+        <div class="alert alert-warning error-message" role="alert">
+            {{loginMessage}}
+        </div>
     {{/if}}
-
     <br>
     <form name="MyForm" method=post action="/validateLogin" class="login-items">
         <table>
@@ -19,7 +18,7 @@
                     </div>
                 </td>
                 <td><input type="text" name="username" size=10 maxlength=10 class="form-control" placeholder="Username"
-                           aria-label="Username"></td>
+                           aria-label="Username" required></td>
             </tr>
             <tr class="row">
                 <td class="col">
@@ -28,11 +27,14 @@
                     </div>
                 </td>
                 <td><input type="password" name="password" size=10 maxlength="10" class="form-control"
-                           placeholder="Password" aria-label="Password"></td>
+                           placeholder="Password" aria-label="Password" required></td>
             </tr>
         </table>
         <br/>
-        <input class="btn button-coloured" type="submit" name="Submit2" value="Log In">
+        <div class="login-buttons">
+            <a href="/signup" class="btn button-coloured">Sign Up</a>
+            <input class="btn button-coloured" type="submit" name="Submit2" value="Log In">
+        </div>
     </form>
 
 </div>

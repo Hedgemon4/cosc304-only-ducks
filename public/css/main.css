@@ -1,0 +1,20 @@
+.space{
+    margin: 1rem;
+}
+
+.button-coloured {
+    border: #fff780;
+    background-color: #e55701;
+    color: #fff780;
+}
+
+.button-coloured:hover{
+    border: #fff780;
+    background-color: #cd4e01;
+    color: #fff780;
+}
+
+.card-body{
+    background-color: #fdffc5;
+    color: #e55701
+}

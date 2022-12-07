@@ -11,7 +11,11 @@ router.post('/', function (req, res) {
         let authenticatedUser = await validateLogin(req);
         if (authenticatedUser) {
             req.session.authenticatedUser = authenticatedUser
-            res.redirect("/");
+            if (req.session.loginRedirect) {
+                req.session.loginRedirect = false
+                res.redirect("/checkout");
+            } else
+                res.redirect("/");
         } else {
             res.redirect("/login")
         }
@@ -34,16 +38,20 @@ async function validateLogin(req) {
             const ps = new sql.PreparedStatement(pool)
             ps.input('userId', sql.VarChar(20))
             ps.input('password', sql.VarChar(30))
-            await ps.prepare("SELECT userid, password FROM customer WHERE userid = @userId AND password = @password")
+            await ps.prepare("SELECT userid, password, customerId, isAdmin FROM customer WHERE userid = @userId COLLATE Latin1_General_CS_AS AND password = @password COLLATE Latin1_General_CS_AS")
 
             let results = await ps.execute({userId: username, password: password})
 
             let user = results.recordset
 
-            if (user[0])
+            if (user[0]) {
+                req.session.customerId = user[0].customerId
+                req.session.isAdmin = user[0].isAdmin
                 return username
-
-            return false;
+            } else {
+                req.session.loginMessage = "Invalid login provided. Please try again."
+                return false
+            }
         } catch (err) {
             console.dir(err)
             return false;

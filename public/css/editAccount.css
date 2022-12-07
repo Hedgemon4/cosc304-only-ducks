@@ -1,0 +1,9 @@
+.button-group{
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.error-message{
+    display: inline-block;
+}
