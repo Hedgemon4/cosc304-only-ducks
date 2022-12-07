@@ -57,7 +57,6 @@ CREATE TABLE ordersummary (
 CREATE TABLE category (
     categoryId          INT IDENTITY,
     categoryName        VARCHAR(50),
-    PRIMARY KEY (categoryId)
 );
 
 
