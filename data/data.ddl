@@ -20,7 +20,7 @@ CREATE TABLE customer (
     phonenum            VARCHAR(20),
     address             VARCHAR(50),
     city                VARCHAR(40),
-    state               VARCHAR(20),
+    state               VARCHAR(30),
     postalCode          VARCHAR(20),
     country             VARCHAR(40),
     userid              VARCHAR(20),

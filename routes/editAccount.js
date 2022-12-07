@@ -122,7 +122,7 @@ router.post('/save', function (req, res) {
             validInput = false
             req.session.editMessage = 'The entered postal code is invalid. Please enter a valid postal code.'
             delete customerInput.postalCode
-        } else if (!provinces.includes(state) || state.length > 20) {
+        } else if (!provinces.includes(state) || state.length > 30) {
             validInput = false
             req.session.editMessage = 'The entered province is invalid. Please enter a valid province.'
             delete customerInput.state
