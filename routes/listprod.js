@@ -19,8 +19,6 @@ router.get('/', function (req, res) {
 
             let product = results.recordset
 
-            console.log(product)
-
             res.render('listprod', {name: name, product: product, title: "OnlyDucks Products"})
 
         } catch (err) {

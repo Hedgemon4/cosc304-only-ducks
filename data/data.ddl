@@ -20,7 +20,7 @@ CREATE TABLE customer (
     phonenum            VARCHAR(20),
     address             VARCHAR(50),
     city                VARCHAR(40),
-    state               VARCHAR(20),
+    state               VARCHAR(30),
     postalCode          VARCHAR(20),
     country             VARCHAR(40),
     userid              VARCHAR(20),
@@ -46,7 +46,7 @@ CREATE TABLE ordersummary (
     totalAmount         DECIMAL(10,2),
     shiptoAddress       VARCHAR(50),
     shiptoCity          VARCHAR(40),
-    shiptoState         VARCHAR(20),
+    shiptoState         VARCHAR(30),
     shiptoPostalCode    VARCHAR(20),
     shiptoCountry       VARCHAR(40),
     customerId          INT,
@@ -86,12 +86,12 @@ CREATE TABLE orderproduct (
 );
 
 CREATE TABLE incart (
-    orderId             INT,
+    customerId          INT,
     productId           INT,
     quantity            INT,
     price               DECIMAL(10,2),
-    PRIMARY KEY (orderId, productId),
-    FOREIGN KEY (orderId) REFERENCES ordersummary(orderId)
+    PRIMARY KEY (customerId, productId),
+    FOREIGN KEY (customerId) REFERENCES customer(customerId)
         ON UPDATE CASCADE ON DELETE NO ACTION,
     FOREIGN KEY (productId) REFERENCES product(productId)
         ON UPDATE CASCADE ON DELETE NO ACTION
@@ -225,3 +225,6 @@ SELECT @orderId = @@IDENTITY
 INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 5, 4, 21.35)
 INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 19, 2, 81)
 INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 20, 3, 10);
+
+INSERT INTO incart (customerId, productId, quantity, price) VALUES (1, 1, 1, 18.00);
+INSERT INTO incart (customerId, productId, quantity, price) VALUES (1, 2, 2, 19.00);
