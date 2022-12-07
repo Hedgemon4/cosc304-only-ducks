@@ -12,10 +12,6 @@ router.get('/', function (req, res, next) {
                 let sqlQuery = "SELECT CAST(orderDate AS DATE) AS date, SUM(totalAmount) AS dailyTotal FROM ordersummary GROUP BY CAST(orderDate AS DATE)"
                 let results = await pool.request().query(sqlQuery)
                 let sales = results.recordset
-                let itemByWarehouse="SELECT product.productId AS productid, product.productName AS productname, p.warehouseId AS wId, warehouse.warehouseName AS wName, SUM(p.quantity) AS quantity FROM productInventory p INNER JOIN product  ON product.productId = p.productId INNER JOIN warehouse ON p.warehouseId=warehouse.warehouseId GROUP BY product.productId, product.productName, p.warehouseId,warehouse.warehouseName;"
-                let resultsWarehouse = await pool.request().query(itemByWarehouse);
-                let inventories=resultsWarehouse.recordset
-                res.render('admin', {dailySales: sales, inventoriesByWarehouse: inventories, title: "OnlyDucks Administrator Panel"})
                 console.log(req.query)
                 if(req.query.update && req.query.wId && req.query.newInventory){
                     const ps = new sql.PreparedStatement(pool)
@@ -35,7 +31,7 @@ router.get('/', function (req, res, next) {
                                 console.error(err)
                                 return
                             }
-                            // console.log(result)
+                            console.log(result)
                             ps.unprepare((err) => {
                                 if (err) {
                                     console.error(err)
@@ -45,6 +41,20 @@ router.get('/', function (req, res, next) {
                     })
 
                 }
+                let wQuery="SELECT warehouseId as wId, warehouseName as wName from warehouse;"
+                let wResults= await pool.request().query(wQuery);
+                let warehouseIds= wResults.recordset
+                let productInfo=[]
+                const ps= new sql.PreparedStatement(pool)
+                for (let i = 0; i < warehouseIds.length; i++) {
+                    let result= wResults.recordset[i];
+                    //ps.input("warehouseId",sql.Int)
+                    let result2 = await pool.request().input('warehouseId', sql.Int, result.wId).query("SELECT p.productId AS productid, product.productName AS productname, p.warehouseId AS warehouseid ,p.quantity AS quantity FROM productInventory AS p JOIN product ON product.productId = p.productId WHERE p.warehouseId = @warehouseId ORDER BY p.productId;")
+                    productInfo.push(result2.recordset)
+                }
+                //console.log(productInfo[0])
+                //console.log(warehouseIds)
+                res.render('admin', {dailySales: sales, warehouses: warehouseIds, products: productInfo,title: "OnlyDucks Administrator Panel"})
             } catch (err) {
                 console.dir(err)
                 res.end()

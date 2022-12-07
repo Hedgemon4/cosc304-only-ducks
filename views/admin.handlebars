@@ -30,35 +30,35 @@
 
 
     <h2>Inventory by Warehouse</h2>
-    <form name="form2">
+    {{#each warehouses}}
+    <form name="form2" id='warehouse{{this.wId}}'>
     <table class="table">
+            <h3>Warehouse Name: {{this.wName}} Warehouse ID: {{this.wId}}</h3>
         <thead>
         <tr>
             <th scope="col">Product ID</th>
             <th scope="col">Product Name</th>
             <th scope="col">Product Inventory</th>
-            <th scope="col">Warehouse ID</th>
-            <th scope="col">Warehouse Name</th>
         </tr>
         </thead>
         <tbody>
-        {{#each inventoriesByWarehouse}}
+        {{#each (lookup ../products @index)}}
             <tr>
-                <td>{{ this.productid}}</td>
+                <td>{{this.productid}}</td>
                 <td>{{this.productname}}</td>
                 <td>
                     <label>
-                        <input type='number' name="prodInv" data-id="{{this.productid}}" data-wid="{{this.wId}}"  min='0' step='1' oninput="validity.valid||(value='');"
+                        <input type='number' name="prodInv" data-id="{{this.productid}}" data-id="{{this.warehouseid}}" min='0' step='1' oninput="validity.valid||(value='');"
                                id='newinventory{{this.productid}}' value={{this.quantity}}>
                     </label></td>
-                <td>{{this.wId}}</td>
-                <td>{{this.wName}}</td>
-                <td><button type=button onclick="update({{ this.productid }}, {{this.wId}}, document.form2.newinventory{{this.productid}}.value);"
+                <td>
+                    <button type=button onclick="update({{ this.productid }}, {{this.warehouseid}}, document.form2.newinventory{{this.productid}}.value);"
                             value="Update Inventory">Update Inventory</button></td>
             </tr>
         {{/each}}
         </tbody>
     </table>
     </form>
+    {{/each}}
     </div>
 </body>
