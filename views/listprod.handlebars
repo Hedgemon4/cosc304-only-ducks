@@ -4,14 +4,19 @@
 <h1 class="page-space">Search for the products you want to buy:</h1>
 <form method="get" action="/listprod">
     <div class="product-search">
-        <input type="text" name="productName" class="form-control search-bar">
+        <select size="1" name="categoryName">
+            {{#each categories}}
+                <option {{selected this ../category}}>{{this}}</option>
+            {{/each}}
+            <input type="text" name="productName" class="form-control search-bar">
+        </select>
         <input type="submit" class="btn btn-primary" value="Submit">
         <input type="reset" class="btn btn-primary" value="Reset">
     </div>
     {{#if name}}
-        <h2 class="page-space">Products containing '{{name}}'</h2>
+        <h2 class="page-space">Products {{specifyCat}} containing '{{name}}'</h2>
     {{else}}
-        <h2 class="page-space">All Products</h2>
+        <h2 class="page-space">All {{category}}</h2>
     {{/if}}
     {{#if product}}
         <div class="list-product-flex">
