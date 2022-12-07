@@ -153,7 +153,7 @@ router.post('/save', function (req, res) {
                 ps.input('phonenum', sql.VarChar(20))
                 ps.input('address', sql.VarChar(50))
                 ps.input('city', sql.VarChar(40))
-                ps.input('state', sql.VarChar(20))
+                ps.input('state', sql.VarChar(30))
                 ps.input('postalCode', sql.VarChar(20))
                 ps.input('country', sql.VarChar(40))
                 ps.input('userid', sql.VarChar(20))

@@ -46,7 +46,7 @@ CREATE TABLE ordersummary (
     totalAmount         DECIMAL(10,2),
     shiptoAddress       VARCHAR(50),
     shiptoCity          VARCHAR(40),
-    shiptoState         VARCHAR(20),
+    shiptoState         VARCHAR(30),
     shiptoPostalCode    VARCHAR(20),
     shiptoCountry       VARCHAR(40),
     customerId          INT,
