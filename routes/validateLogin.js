@@ -68,6 +68,7 @@ async function validateLogin(req) {
 
 async function loadCart(req, res) {
     let pool = false
+    // Need to load items in stored cart on login
     try {
         pool = await sql.connect(dbConfig)
 
@@ -88,18 +89,22 @@ async function loadCart(req, res) {
         } else {
             productList = req.session.productList
         }
+
         if (cart[0]) {
             // If incart has values
-            orderId = cart[0].incart.orderId
+            orderId = cart[0].orderId
             req.session.orderId = orderId
             for (let i = 0; i < cart.length; i++) {
                 // want to add inCart values to the session, and update the database if the cart also had some values
-                let id = cart[i].incart.productId
-                let name = cart[i].product.productName
-                let price = cart[i].incart.price
-                let quantity = cart[i].incart.quantity
+                console.log("hi")
+                console.log(cart[i])
+                let id = cart[i].productId
+                let name = cart[i].productName
+                let price = cart[i].price
+                let quantity = cart[i].quantity
                 products.push(id)
                 if (productList[id]) {
+                    console.log("Went to update")
                     quantity += productList[id].quantity
                     productList[id].quantity = quantity
                     const updateInCart = new sql.PreparedStatement(pool)
@@ -109,6 +114,7 @@ async function loadCart(req, res) {
                     await updateInCart.prepare('UPDATE incart SET quantity = @quantity WHERE orderId = @orderId AND productId = @productId')
                     await updateInCart.execute({orderId: orderId, productId: id, quanity: quantity})
                 } else {
+                    console.log('went to add')
                     productList[id] = {
                         "id": id,
                         "name": name,
@@ -128,6 +134,7 @@ async function loadCart(req, res) {
             let results = await ps2.execute({customerId: customerId, date: new Date()})
             orderId = results.recordset[0].orderId
             req.session.orderId = orderId
+            console.log("made new order id")
         }
 
         // Then, we need to insert any items in the session but not in the database into the database
