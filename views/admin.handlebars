@@ -21,5 +21,29 @@
         {{/each}}
         </tbody>
     </table>
-</div>
+
+
+    <h2>Inventory by Warehouse</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Product ID</th>
+            <th scope="col">Product Name</th>
+
+            <th scope="col">Warehouse ID</th>
+            <th scope="col">Warehouse Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each inventoriesByWarehouse}}
+            <tr>
+                <td>{{ this.productidd}}</td>
+                <td>{{this.productnamee}}</td>
+                <td>{{this.wIdd}}</td>
+                <td>{{this.wNamee}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>>
+    </div>
 </body>
