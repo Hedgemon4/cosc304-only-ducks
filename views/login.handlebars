@@ -4,7 +4,9 @@
 <div class="login-flex">
     <h3 class="space login-items">Please Login to System</h3>
     {{#if loginMessage}}
-        <p class="login-items">{{loginMessage}}</p>
+        <div class="alert alert-warning error-message" role="alert">
+            {{loginMessage}}
+        </div>
     {{/if}}
     <br>
     <form name="MyForm" method=post action="/validateLogin" class="login-items">
