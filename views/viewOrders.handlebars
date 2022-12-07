@@ -1,0 +1,48 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/listorder.css">
+</head>
+<body>
+<h1 class="ordertitle">Your Orders</h1>
+<div class="flex-table">
+    <table class="table table-striped table-stuff">
+        <thead>
+        <tr>
+            <th scope="col">Order ID</th>
+            <th scope="col">Total Amount</th>
+            <th scope="col">Order Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each order}}
+            <tr>
+                <td>{{this.orderId}}</td>
+                <td>${{displaymoney this.totalAmount}}</td>
+                <td>{{displayDate this.orderDate}}</td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each (lookup ../products @index)}}
+                            <tr>
+                                <td>{{this.productName}}</td>
+                                <td>{{this.quantity}}</td>
+                                <td>${{displaymoney this.price}}</td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+</body>
