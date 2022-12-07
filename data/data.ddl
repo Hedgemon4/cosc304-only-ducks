@@ -163,7 +163,7 @@ INSERT INTO product(productName, categoryId, productDesc, productPrice, productI
 INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('Denim Duck', 3, 'I do not even really know what this one is meant to be...',18.00, '/images/Ducks/stonerDuck.jpeg');
 INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('Cool Robot Duck', 1, 'I will be quack.',27.00, '/images/Ducks/terminatorDuck.jpeg');
 INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('Not-So-Cool Robot Duck', 4, 'Really? Tin? What a crappy metal.',17.00, '/images/Ducks/tinDuck.jpeg');
-INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('The Dumbest Duck', 3, 'Do not buy this one. Seriously, it sucks.',40.00, '/images/Ducks/trumpDuck.jpeg');
+INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('The Donald Duck', 3, 'Do not buy this one. Seriously, it sucks.',40.00, '/images/Ducks/trumpDuck.jpeg');
 INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('Oily Duck', 2, 'America! Duck yeah!',200.00, '/images/Ducks/usaDuck.jpeg');
 INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('Sad Mask Duck', 4, 'He is your daddy.',24.00, '/images/Ducks/vaderDuck.png');
 INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('Ugly Duck', 5, 'Not THAT ugly duck. I think that was a duckling.',66.00, '/images/Ducks/witchDuck.jpeg');
