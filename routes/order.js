@@ -89,6 +89,13 @@ router.get('/', function (req, res) {
 
                 await ps3.execute({total: total, orderId: orderId})
                 ps3.unprepare()
+
+                const removeInCart = new sql.PreparedStatement(pool)
+                removeInCart.input('customerId', sql.Int)
+                await removeInCart.prepare('DELETE FROM incart WHERE customerId = @customerId')
+                await removeInCart.execute({customerId: customerId})
+                removeInCart.unprepare()
+
                 if (validId)
                     req.session.productList = null;
             } catch (err) {
