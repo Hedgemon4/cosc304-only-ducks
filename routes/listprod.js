@@ -36,8 +36,9 @@ router.get('/', function (req, res) {
         try {
             pool = await sql.connect(dbConfig)
 
-            let sqlQuery = "SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL FROM product WHERE product.productName LIKE '%' + @param + '%'";
-            let sqlQuery2 = " AND product.categoryId = (SELECT category.categoryId FROM category WHERE category.categoryName = @param2);"
+            let sqlQuery = "SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL FROM product LEFT JOIN orderproduct ON product.productId = orderproduct.productId WHERE product.productName LIKE '%' + @param + '%'";
+            let condtion = " AND product.categoryId = (SELECT category.categoryId FROM category WHERE category.categoryName = @param2)"
+            let groupBy = " GROUP BY product.productId, product.productName, product.productPrice, product.productDesc, productImageURL ORDER BY COUNT(orderproduct.productId) DESC;"
 
             const ps = new sql.PreparedStatement(pool)
             ps.input('param', sql.VarChar(40))
@@ -49,19 +50,22 @@ router.get('/', function (req, res) {
             let results
             let specifyCat
             if (category === 'All') {
-                await ps.prepare(sqlQuery)
+                await ps.prepare(sqlQuery + groupBy)
                 results = await ps.execute({param: name})
                 // this is for displaying later
                 category = 'Products';
                 specifyCat = '';
             } else {
-                await ps1.prepare(sqlQuery + sqlQuery2)
+                await ps1.prepare(sqlQuery + condition + groupBy)
                 results = await ps1.execute({param: name, param2: category})
                 // this is for displaying later
                 specifyCat = 'in ' + category;
             }
 
             let product = results.recordset
+
+            console.log(product)
+
             res.render('listprod', {
                 categories: categories,
                 name: name,
@@ -70,7 +74,6 @@ router.get('/', function (req, res) {
                 product: product,
                 title: "OnlyDucks Products"
             })
-
         } catch (err) {
             console.dir(err);
             res.end();
