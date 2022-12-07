@@ -22,9 +22,9 @@
     flex-wrap: wrap;
 }
 
-.img {
+img {
     float: left;
     width: 200px;
-    height: 200px;
+    height: 450px;
     object-fit: cover;
 }
