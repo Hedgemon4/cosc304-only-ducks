@@ -11,3 +11,10 @@
 .table-item{
     max-width: 500px;
 }
+
+.button-box{
+    display: flex;
+    flex-direction: row;
+    max-width: 550px;
+    justify-content: space-between;
+}

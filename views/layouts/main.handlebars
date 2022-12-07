@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/css/homepage.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
     <title>{{title}}</title>
 </head>
 <body>
@@ -21,15 +21,15 @@
                     <a class="nav-link active nav-color" aria-current="page" href="/listprod">Products</a>
                 </li>
                 <li class="nav-item nav-color">
-                    <a class="nav-link active nav-color" aria-current="page" href="/listorder">List Order</a>
-                </li>
-                <li class="nav-item nav-color">
                     <a class="nav-link active nav-color" aria-current="page" href="/showcart">Shopping Cart</a>
                 </li>
                 {{#if (displayAdmin session)}}
-                <li class="nav-item nav-color">
-                    <a class="nav-link active nav-color" aria-current="page" href="/admin">Admin</a>
-                </li>
+                    <li class="nav-item nav-color">
+                        <a class="nav-link active nav-color" aria-current="page" href="/listorder">List Order</a>
+                    </li>
+                    <li class="nav-item nav-color">
+                        <a class="nav-link active nav-color" aria-current="page" href="/admin">Admin</a>
+                    </li>
                 {{/if}}
             </ul>
         </div>

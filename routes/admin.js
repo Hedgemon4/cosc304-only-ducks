@@ -4,7 +4,7 @@ const auth = require('../auth')
 const sql = require('mssql')
 
 router.get('/', function (req, res, next) {
-    if(auth.checkAuthentication(req, res)) {
+    if(auth.checkAuthentication(req, res) && auth.checkAdmin(req, res)) {
         (async function () {
             let pool = false
             try {

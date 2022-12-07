@@ -16,6 +16,21 @@ const auth = {
         }
 
         return authenticated
+    },
+    checkAdmin: function (req, res){
+        let isAdmin = false
+        if(req.session.isAdmin){
+            isAdmin = true
+        }
+
+        if(!isAdmin){
+            let url = req.protocol + '://' + req.get('host') + req.originalUrl
+            let loginMessage = "You have not been authorized to access the URL " + url
+            req.session.loginMessage = loginMessage
+            res.redirect("/login")
+        }
+
+        return isAdmin
     }
 }
 

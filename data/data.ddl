@@ -20,11 +20,12 @@ CREATE TABLE customer (
     phonenum            VARCHAR(20),
     address             VARCHAR(50),
     city                VARCHAR(40),
-    state               VARCHAR(20),
+    state               VARCHAR(30),
     postalCode          VARCHAR(20),
     country             VARCHAR(40),
     userid              VARCHAR(20),
     password            VARCHAR(30),
+    isAdmin             BIT DEFAULT 0
     PRIMARY KEY (customerId)
 );
 
@@ -45,7 +46,7 @@ CREATE TABLE ordersummary (
     totalAmount         DECIMAL(10,2),
     shiptoAddress       VARCHAR(50),
     shiptoCity          VARCHAR(40),
-    shiptoState         VARCHAR(20),
+    shiptoState         VARCHAR(30),
     shiptoPostalCode    VARCHAR(20),
     shiptoCountry       VARCHAR(40),
     customerId          INT,
@@ -85,12 +86,12 @@ CREATE TABLE orderproduct (
 );
 
 CREATE TABLE incart (
-    orderId             INT,
+    customerId          INT,
     productId           INT,
     quantity            INT,
     price               DECIMAL(10,2),
-    PRIMARY KEY (orderId, productId),
-    FOREIGN KEY (orderId) REFERENCES ordersummary(orderId)
+    PRIMARY KEY (customerId, productId),
+    FOREIGN KEY (customerId) REFERENCES customer(customerId)
         ON UPDATE CASCADE ON DELETE NO ACTION,
     FOREIGN KEY (productId) REFERENCES product(productId)
         ON UPDATE CASCADE ON DELETE NO ACTION
@@ -182,11 +183,12 @@ INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (8,
 INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (9, 1, 2, 97);
 INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (10, 1, 3, 31);
 
-INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Arnold', 'Anderson', 'a.anderson@gmail.com', '204-111-2222', '103 AnyWhere Street', 'Winnipeg', 'MB', 'R3X 45T', 'Canada', 'arnold' , 'test');
-INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Bobby', 'Brown', 'bobby.brown@hotmail.ca', '572-342-8911', '222 Bush Avenue', 'Boston', 'MA', '22222', 'United States', 'bobby' , 'bobby');
-INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Candace', 'Cole', 'cole@charity.org', '333-444-5555', '333 Central Crescent', 'Chicago', 'IL', '33333', 'United States', 'candace' , 'password');
+INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Arnold', 'Anderson', 'a.anderson@gmail.com', '204-111-2222', '103 AnyWhere Street', 'Winnipeg', 'Manitoba', 'R3X 0C9', 'Canada', 'arnold' , 'test');
+INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Bobby', 'Brown', 'bobby.brown@hotmail.ca', '572-342-8911', '222 Bush Avenue', 'Calgary', 'Alberta', 'T1C 0A1', 'Canada', 'bobby' , 'bobby');
+INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Candace', 'Cole', 'cole@charity.org', '333-444-5555', '333 Central Crescent', 'Toronto', 'Ontario', 'M5S 2C5', 'Canada', 'candace' , 'password');
 INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Darren', 'Doe', 'oe@doe.com', '250-807-2222', '444 Dover Lane', 'Kelowna', 'BC', 'V1V 2X9', 'Canada', 'darren' , 'pw');
-INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Elizabeth', 'Elliott', 'engel@uiowa.edu', '555-666-7777', '555 Everwood Street', 'Iowa City', 'IA', '52241', 'United States', 'beth' , 'test');
+INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Elizabeth', 'Elliott', 'engel@uiowa.edu', '555-666-7777', '555 Everwood Street', 'Montreal', 'Quebec', 'T8E 1C3', 'Canada', 'beth' , 'test');
+INSERT INTO customer (userid, password, isAdmin) VALUES ('admin1', 'secure123', 1)
 
 -- Order 1 can be shipped as have enough inventory
 DECLARE @orderId int
@@ -223,3 +225,6 @@ SELECT @orderId = @@IDENTITY
 INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 5, 4, 21.35)
 INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 19, 2, 81)
 INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 20, 3, 10);
+
+INSERT INTO incart (customerId, productId, quantity, price) VALUES (1, 1, 1, 18.00);
+INSERT INTO incart (customerId, productId, quantity, price) VALUES (1, 2, 2, 19.00);

@@ -63,8 +63,6 @@ router.get('/', function (req, res) {
 
             let product = results.recordset
 
-            console.log(product)
-
             res.render('listprod', {
                 categories: categories,
                 name: name,
