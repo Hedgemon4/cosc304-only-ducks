@@ -130,5 +130,13 @@ hbs.handlebars.registerHelper('displayAdmin', function (session){
     return session.authenticatedUser
 })
 
+hbs.handlebars.registerHelper('selected', function(option, value) {
+    if (option === value) {
+        return 'selected';
+    } else {
+        return ''
+    }
+})
+
 // Starting our Express app
 app.listen(3000)

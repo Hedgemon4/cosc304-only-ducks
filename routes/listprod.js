@@ -6,7 +6,7 @@ router.get('/', function (req, res) {
     let name = "";
     if (req.query.productName) name = req.query.productName;
 
-    let category = "";
+    let category = "All";
     if (req.query.categoryName) category = req.query.categoryName;
 
     (async function () {
@@ -14,7 +14,10 @@ router.get('/', function (req, res) {
         try {
             pool = await sql.connect(dbConfig)
 
-            console.log("\t\t\t" + category);
+            let categories = ['All', 'Super Ducks', 'National Ducks', 'Famous Ducks', 'Fictional Ducks', 'Random Ducks'];
+
+            let sqlQuery = "SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL FROM product WHERE product.productName LIKE '%' + @param + '%'";
+            let sqlQuery2 = " AND product.categoryId = (SELECT category.categoryId FROM category WHERE category.categoryName = @param2);"
 
             const ps = new sql.PreparedStatement(pool)
             ps.input('param', sql.VarChar(40))
@@ -26,13 +29,14 @@ router.get('/', function (req, res) {
             let results
             let specifyCat
             if (category === 'All') {
-                await ps.prepare("SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL FROM product WHERE product.productName LIKE '%' + @param + '%'")
+                console.log(sqlQuery);
+                await ps.prepare(sqlQuery)
                 results = await ps.execute({param: name})
                 // this is for displaying later
                 category = 'Products';
                 specifyCat = '';
             } else {
-                await ps1.prepare("SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL FROM product WHERE product.productName LIKE '%' + @param + '%' AND product.categoryId = (SELECT category.categoryId FROM category WHERE category.categoryName = @param2);")
+                await ps1.prepare(sqlQuery + sqlQuery2)
                 results = await ps1.execute({param: name, param2: category})
                 // this is for displaying later
                 specifyCat = 'in ' + category;
@@ -40,6 +44,7 @@ router.get('/', function (req, res) {
 
             let product = results.recordset
             res.render('listprod', {
+                categories: categories,
                 name: name,
                 category: category,
                 specifyCat: specifyCat,
