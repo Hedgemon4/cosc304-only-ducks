@@ -14,7 +14,6 @@ router.get('/', function (req, res) {
             for (let i = 0; i < results.recordset.length; i++) {
                 categories.push(results.recordset[i].categoryName)
             }
-
             return categories
         } catch (err) {
             console.dir(err)
@@ -37,7 +36,7 @@ router.get('/', function (req, res) {
             pool = await sql.connect(dbConfig)
 
             let sqlQuery = "SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL FROM product LEFT JOIN orderproduct ON product.productId = orderproduct.productId WHERE product.productName LIKE '%' + @param + '%'";
-            let condtion = " AND product.categoryId = (SELECT category.categoryId FROM category WHERE category.categoryName = @param2)"
+            let condition = " AND product.categoryId = (SELECT category.categoryId FROM category WHERE category.categoryName = @param2)"
             let groupBy = " GROUP BY product.productId, product.productName, product.productPrice, product.productDesc, productImageURL ORDER BY COUNT(orderproduct.productId) DESC;"
 
             const ps = new sql.PreparedStatement(pool)
