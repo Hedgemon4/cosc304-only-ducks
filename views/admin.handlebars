@@ -2,6 +2,12 @@
     <link rel="stylesheet" type="text/css" href="/css/admin.css">
 </head>
 <body>
+<script>
+    const update = (productid, wId, newInventory) => {
+        window.location = "admin?update=" + productid + "&wId="+wId +"&newInventory=" +newInventory;
+        //window.location.reload()
+    }
+</script>
 <div class="admin-display">
     <h1>OnlyDucks Administrator Panel</h1>
     <h2>Daily Sales Report</h2>
@@ -24,6 +30,7 @@
 
 
     <h2>Inventory by Warehouse</h2>
+    <form name="form2">
     <table class="table">
         <thead>
         <tr>
@@ -39,12 +46,19 @@
             <tr>
                 <td>{{ this.productid}}</td>
                 <td>{{this.productname}}</td>
-                <td>{{this.quantity}}</td>
+                <td>
+                    <label>
+                        <input type='number' name="prodInv" data-id="{{this.productid}}" data-wid="{{this.wId}}"  min='0' step='1' oninput="validity.valid||(value='');"
+                               id='newinventory{{this.productid}}' value={{this.quantity}}>
+                    </label></td>
                 <td>{{this.wId}}</td>
                 <td>{{this.wName}}</td>
+                <td><button type=button onclick="update({{ this.productid }}, {{ this.wId}}, document.form2.newinventory{{this.productid}}.value);"
+                            value="Update Inventory">Update Inventory</button></td>
             </tr>
         {{/each}}
         </tbody>
     </table>
+    </form>
     </div>
 </body>
