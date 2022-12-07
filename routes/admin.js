@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
                 let results = await pool.request().query(dailySalesQuery)
                 let sales = results.recordset
 
-                let customersQuery = "SELECT * FROM customer"
+                let customersQuery = "SELECT * FROM customer WHERE isAdmin <> 1"
                 results = await pool.request().query(customersQuery)
                 let customers = results.recordset
 
