@@ -26,6 +26,25 @@
     <div>
         <canvas id="myChart"></canvas>
     </div>
+    <h2>Customer Overview</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">User ID</th>
+            <th scope="col">Customer Name</th>
+            <th scope="col">Customer Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each allCustomers}}
+            <tr>
+                <td>{{this.userid}}</td>
+                <td>{{this.firstName}} {{this.lastName}}</td>
+                <td>{{this.email}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
 </div>
 </body>
 <script>

@@ -9,11 +9,20 @@ router.get('/', function (req, res) {
             let pool = false
             try {
                 pool = await sql.connect(dbConfig)
-                let sqlQuery = "SELECT CAST(orderDate AS DATE) AS date, SUM(totalAmount) AS dailyTotal FROM ordersummary GROUP BY CAST(orderDate AS DATE)"
-                let results = await pool.request().query(sqlQuery)
+
+                let dailySalesQuery = "SELECT CAST(orderDate AS DATE) AS date, SUM(totalAmount) AS dailyTotal FROM ordersummary GROUP BY CAST(orderDate AS DATE)"
+                let results = await pool.request().query(dailySalesQuery)
                 let sales = results.recordset
 
-                res.render('admin', {dailySales: sales, title: "OnlyDucks Administrator Panel"})
+                let customersQuery = "SELECT * FROM customer"
+                results = await pool.request().query(customersQuery)
+                let customers = results.recordset
+
+                res.render('admin', {
+                    dailySales: sales,
+                    allCustomers: customers,
+                    title: "OnlyDucks Administrator Panel"
+                })
             } catch (err) {
                 console.dir(err)
                 res.end()
