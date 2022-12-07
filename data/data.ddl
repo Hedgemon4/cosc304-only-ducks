@@ -60,7 +60,6 @@ CREATE TABLE category (
     PRIMARY KEY(categoryId)
 );
 
-
 CREATE TABLE product (
     productId           INT IDENTITY,
     productName         VARCHAR(40),
