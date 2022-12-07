@@ -145,5 +145,13 @@ hbs.handlebars.registerHelper('selected', function(option, value){
     }
 })
 
+hbs.handlebars.registerHelper('selected', function(option, value) {
+    if (option === value) {
+        return 'selected';
+    } else {
+        return ''
+    }
+})
+
 // Starting our Express app
 app.listen(3000)
