@@ -3,6 +3,26 @@ const router = express.Router();
 const sql = require('mssql');
 
 router.get('/', function (req, res) {
+
+    async function getCategories() {
+        let pool = false
+        try {
+            pool = await sql.connect(dbConfig);
+            let results = await pool.query("SELECT category.categoryName FROM category;")
+            let categories = []
+            categories.push('All')
+            for (let i = 0; i < results.recordset.length; i++) {
+                categories.push(results.recordset[i].categoryName)
+            }
+
+            return categories
+        } catch (err) {
+            console.dir(err)
+        } finally {
+            pool.close()
+        }
+    }
+
     let name = "";
     if (req.query.productName) name = req.query.productName;
 
@@ -11,10 +31,10 @@ router.get('/', function (req, res) {
 
     (async function () {
         let pool = false;
+        let categories = await getCategories();
+        console.log(categories)
         try {
             pool = await sql.connect(dbConfig)
-
-            let categories = ['All', 'Super Ducks', 'National Ducks', 'Famous Ducks', 'Fictional Ducks', 'Random Ducks'];
 
             let sqlQuery = "SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL FROM product WHERE product.productName LIKE '%' + @param + '%'";
             let sqlQuery2 = " AND product.categoryId = (SELECT category.categoryId FROM category WHERE category.categoryName = @param2);"
@@ -29,7 +49,6 @@ router.get('/', function (req, res) {
             let results
             let specifyCat
             if (category === 'All') {
-                console.log(sqlQuery);
                 await ps.prepare(sqlQuery)
                 results = await ps.execute({param: name})
                 // this is for displaying later
