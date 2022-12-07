@@ -19,7 +19,17 @@ router.get('/', function (req, res) {
         'Saskatchewan',
         'Yukon'
     ]
-    res.render('signup', {provinces: provinces, title: 'OnlyDucks Signup'})
+    let error = false
+    let form = false
+    if(req.session.signupError){
+        error = req.session.signupError
+        req.session.signupError = false
+    }
+    if(req.session.signupForm){
+        form = req.session.signupForm
+        req.session.signupForm = false
+    }
+    res.render('signup', {provinces: provinces, error: error, form: form, title: 'OnlyDucks Signup'})
 })
 
 module.exports = router

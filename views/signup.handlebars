@@ -5,7 +5,9 @@
 <div class="container-fluid">
     <h1>Signup</h1>
     {{#if error}}
-        <h2 class="m-lg-3">{{error}}</h2>
+        <div class="alert alert-warning error-message" role="alert">
+            {{error}}
+        </div>
     {{/if}}
     <form name="SignupForm" method=post action="/createAccount">
         <div class="row mt-3">
@@ -23,7 +25,8 @@
         <div class="row mt-3">
             <div class="form-group col-md-4">
                 <label for="userName">Username</label>
-                <input type="text" name="username" class="form-control" id="userName" placeholder="Username" required>
+                <input type="text" name="username" class="form-control" id="userName" placeholder="Username"
+                       value="{{form.userid}}" required>
             </div>
             <div class="form-group col-md-4">
                 <label for="email">Email address</label>
