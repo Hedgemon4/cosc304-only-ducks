@@ -3,109 +3,109 @@
 </head>
 <body>
 
-{{#if isValid}}
-    {{#if canReview}}
-        {{#if hasBought}}
-            <div class="product-flex-col">
-                {{#if product}}
-                    {{#each product}}
-                        <div class="product-flex-row-large-margin">
-                            <div class="product-flex-col-half">
+<div class="product-flex-col">
+    {{#if product}}
+        {{#each product}}
+            <div class="product-flex-row-large-margin">
+                <div class="product-flex-col-half">
 
-                                <div class="product-flex-row"><h1 class="product-title"><b>{{this.productName}}</b></h1>
-                                </div>
-                                <div class="product-flex-row-text-top"><h1>About:&nbsp;</h1>
-                                    <h3 style="margin: 0.75rem 0 0 0"> {{this.productDesc}}</h3></div>
-                                <div class="product-flex-row-text"><h1>Price:&nbsp;</h1>
-                                    <h3>${{displaymoney this.productPrice}}</h3></div>
-
-                                <div class="product-flex-row-buttons">
-                                    <a href="/listprod" class="btn button-coloured">Back To Shopping</a>
-                                    <a href={{getAddToCartLink this.productId this.productName this.productPrice}}
-                                       class="btn button-coloured">Add to Cart</a>
-                                </div>
-                            </div>
-                            {{#if this.productImageURL}}
-                                <img src={{this.productImageURL}} class="large-image">
-                            {{/if}}
-                            {{#if this.productImage}}
-                                <img src="/displayImage?id={{this.productId}}" class="large-image" alt="Cannot find
-                                image">
-                            {{/if}}
-                        </div>
-                    {{/each}}
-                {{/if}}
-
-                <form class="product-flex-col-half-review" method="get" action="/product">
-                    <h1>Leave a review!</h1>
-                    <h5 class="light-text">How would you rate this duck out of 5?</h5>
-                    <div class="product-flex-row-small-margin">
-
-
-                        <div class="form-check form-check-inline">
-                            <input class="radio-input" type="radio" name="rating" id="star1" value="1">
-                            <label class="form-check-label" for="star1">1</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="radio-input" type="radio" name="rating" id="star2" value="2">
-                            <label class="form-check-label" for="star2">2</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="radio-input" type="radio" name="rating" id="star3" value="3">
-                            <label class="form-check-label" for="star3">3</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="radio-input" type="radio" name="rating" id="star4" value="4">
-                            <label class="form-check-label" for="star4">4</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="radio-input" type="radio" name="rating" id="star5" value="5">
-                            <label class="form-check-label" for="star5">5</label>
-                        </div>
-
+                    <div class="product-flex-row"><h1 class="product-title"><b>{{this.productName}}</b></h1>
                     </div>
+                    <div class="product-flex-row-text-top"><h1>About:&nbsp;</h1>
+                        <h3 style="margin: 0.75rem 0 0 0"> {{this.productDesc}}</h3></div>
+                    <div class="product-flex-row-text"><h1>Price:&nbsp;</h1>
+                        <h3>${{displaymoney this.productPrice}}</h3></div>
 
-                    <textarea class="form-control review-input" name="reviewComment" id="reviewInput" rows="5"
-                              placeholder="Tell others about your experience!"></textarea>
-
-                    <div class="product-flex-col-half-review">
-                        <h5 class="light-text">Please enter your customer id: </h5>
-                        <input name="customerId" style="margin: 0 0 1rem 0">
+                    <div class="product-flex-row-buttons">
+                        <a href="/listprod" class="btn button-coloured">Back To Shopping</a>
+                        <a href={{getAddToCartLink this.productId this.productName this.productPrice}}
+                           class="btn button-coloured">Add to Cart</a>
                     </div>
-
-                    <input class="btn button-coloured" type="submit" value="Submit Review">
-
-                    <input name="id" value="{{id}}" style="visibility: hidden">
-                </form>
-
-                {{#if reviews}}
-                    {{#each reviews}}
-                        <div class="product-flex-row-buttons">
-                            <h1>{{this.reviewRating}}/5</h1>
-                            <div class="card-group">
-                                <div class="card product-card" style="width: 50rem;">
-                                    <div class="card-body">
-                                        <h4 class="card-title"><a>{{this.firstName}} {{this.lastName}} reviewed this
-                                            product
-                                            on {{displayDate this.reviewDate}}</a></h4>
-                                        <p class="card-text">{{this.reviewComment}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {{/each}}
+                </div>
+                {{#if this.productImageURL}}
+                    <img src={{this.productImageURL}} class="large-image">
                 {{/if}}
+                {{#if this.productImage}}
+                    <img src="/displayImage?id={{this.productId}}" class="large-image" alt="Cannot find
+                    image">
+                {{/if}}
+            </div>
+        {{/each}}
+    {{/if}}
 
+    <form class="product-flex-col-half-review" method="get" action="/product">
+        <h1>Leave a review!</h1>
+        <h5 class="light-text">How would you rate this duck out of 5?</h5>
+        <div class="product-flex-row-small-margin">
+
+
+            <div class="form-check form-check-inline">
+                <input class="radio-input" type="radio" name="rating" id="star1" value="1">
+                <label class="form-check-label" for="star1">1</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="radio-input" type="radio" name="rating" id="star2" value="2">
+                <label class="form-check-label" for="star2">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="radio-input" type="radio" name="rating" id="star3" value="3">
+                <label class="form-check-label" for="star3">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="radio-input" type="radio" name="rating" id="star4" value="4">
+                <label class="form-check-label" for="star4">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="radio-input" type="radio" name="rating" id="star5" value="5">
+                <label class="form-check-label" for="star5">5</label>
             </div>
 
+        </div>
 
+        <textarea class="form-control review-input" name="reviewComment" id="reviewInput" rows="5"
+                  placeholder="Tell others about your experience!"></textarea>
+
+        {{#if isValid}}
+            {{#if canReview}}
+                {{#if hasBought}}
+                {{else}}
+                    <div class="alert alert-warning error-message" role="alert">
+                        You cannot review a product you have not bought!
+                    </div>
+                {{/if}}
+            {{else}}
+                <div class="alert alert-warning error-message" role="alert">
+                    You have already reviewed this product! We only allow for a single review per customer.
+                </div>
+            {{/if}}
         {{else}}
-            <h1>You cannot review a product you have not bought!</h1>
+            <div class="alert alert-warning error-message" role="alert">
+                You must be logged in to review a product!
+            </div>
         {{/if}}
-    {{else}}
-        <h1>You have already reviewed this product! We only allow for a single review per customer.</h1>
+
+        <input class="btn button-coloured" type="submit" value="Submit Review">
+
+        <input name="id" value="{{id}}" style="visibility: hidden">
+    </form>
+
+    {{#if reviews}}
+        {{#each reviews}}
+            <div class="product-flex-row-buttons">
+                <h1>{{this.reviewRating}}/5</h1>
+                <div class="card-group">
+                    <div class="card product-card" style="width: 50rem;">
+                        <div class="card-body">
+                            <h4 class="card-title"><a>{{this.firstName}} {{this.lastName}} reviewed this
+                                product
+                                on {{displayDate this.reviewDate}}</a></h4>
+                            <p class="card-text">{{this.reviewComment}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
     {{/if}}
-{{else}}
-    <h1>Invalid ID. Please go back to the previous page and try again.</h1>
-{{/if}}
+
+</div>
 </body>

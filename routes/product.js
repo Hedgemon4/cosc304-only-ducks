@@ -19,8 +19,8 @@ router.get('/', async function (req, res) {
     }
 
     let cId = 0;
-    if (req.query.customerId) {
-        cId = req.query.customerId
+    if (req.session.customerId) {
+        cId = req.session.customerId
     }
 
     let comment = "";
@@ -36,12 +36,11 @@ router.get('/', async function (req, res) {
         isValid = await idInDatabase()
         canReview = await idHasReviewed(cId, id)
         hasBought = await idHasBought(cId, id)
+    } else {
+        isValid = false
     }
 
     function isPositiveInteger(str) {
-        if (typeof str !== 'string') {
-            return false;
-        }
         const num = Number(str);
         return Number.isInteger(num) && num > 0;
     }
