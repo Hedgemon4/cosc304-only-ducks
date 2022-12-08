@@ -1,6 +1,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="/css/admin.css">
 </head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <body>
 <script>
     const update = (productid, wId, newInventory) => {
@@ -23,6 +24,29 @@
             <tr>
                 <td>{{displayDate this.date}}</td>
                 <td>${{displaymoney this.dailyTotal}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+    <h2>Daily Sales Graph</h2>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <h2>Customer Overview</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">User ID</th>
+            <th scope="col">Customer Name</th>
+            <th scope="col">Customer Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each allCustomers}}
+            <tr>
+                <td>{{this.userid}}</td>
+                <td>{{this.firstName}} {{this.lastName}}</td>
+                <td>{{this.email}}</td>
             </tr>
         {{/each}}
         </tbody>
@@ -62,3 +86,40 @@
     {{/each}}
     </div>
 </body>
+<script>
+    let label = [];
+    let data = [];
+
+        {{#each dailySales}}
+        label.push("{{displayDate this.date}}");
+        data.push({{displaymoney this.dailyTotal}});
+        {{/each}}
+
+    const img = new Image();
+    img.src = 'https://cdn2.vectorstock.com/i/1000x1000/26/31/yellow-rubber-duck-pattern-on-blue-background-vector-6452631.jpg';
+
+    img.onload = () => {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const fillPattern = ctx.createPattern(img, 'repeat');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: label,
+                datasets: [{
+                    label: 'Total order amount',
+                    data: data,
+                    borderWidth: 1,
+                    backgroundColor: fillPattern
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    };
+</script>

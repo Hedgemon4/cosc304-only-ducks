@@ -9,16 +9,7 @@ router.get('/', function (req, res) {
         productList = req.session.productList
     }
 
-    let customerId = false;
-    if (req.query.customerId) customerId = req.query.customerId
-
-    function isPositiveInteger(str) {
-        if (typeof str !== 'string') {
-            return false;
-        }
-        const num = Number(str);
-        return Number.isInteger(num) && num > 0;
-    }
+    let customerId = req.session.customerId;
 
     let shippingTo;
 
@@ -39,7 +30,7 @@ router.get('/', function (req, res) {
     (async function () {
         let validId = false
         let orderId = false
-        if (isPositiveInteger(customerId) && await idInDatabase()) {
+        if (await idInDatabase()) {
             let pool = false
             try {
                 validId = true
@@ -98,6 +89,13 @@ router.get('/', function (req, res) {
 
                 await ps3.execute({total: total, orderId: orderId})
                 ps3.unprepare()
+
+                const removeInCart = new sql.PreparedStatement(pool)
+                removeInCart.input('customerId', sql.Int)
+                await removeInCart.prepare('DELETE FROM incart WHERE customerId = @customerId')
+                await removeInCart.execute({customerId: customerId})
+                removeInCart.unprepare()
+
                 if (validId)
                     req.session.productList = null;
             } catch (err) {

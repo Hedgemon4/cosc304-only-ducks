@@ -19,6 +19,10 @@ let product = require('./routes/product')
 let displayImage = require('./routes/displayImage')
 let customer = require('./routes/customer')
 let ship = require('./routes/ship')
+let signup = require('./routes/signup')
+let createAccount = require('./routes/createAccount')
+let editAccount = require('./routes/editAccount')
+let viewOrders = require('./routes/viewOrders')
 const app = express()
 
 // Enable parsing of requests for POST requests
@@ -65,30 +69,33 @@ app.set('view engine', 'handlebars');
 // Setting up Express.js routes.
 // These present a "route" on the URL of the site.
 // Eg: http://127.0.0.1/loaddata
-app.use('/', index);
-app.use('/loaddata', loadData);
-app.use('/listorder', listOrder);
-app.use('/listprod', listProd);
-app.use('/addcart', addCart);
-app.use('/showcart', showCart);
-app.use('/checkout', checkout);
-app.use('/order', order);
-app.use('/login', login);
-app.use('/validateLogin', validateLogin);
-app.use('/logout', logout);
-app.use('/admin', admin);
-app.use('/product', product);
-app.use('/displayImage', displayImage);
-app.use('/customer', customer);
-app.use('/ship', ship);
-
-app.use(express.static(__dirname + '/public'));
+app.use('/', index)
+app.use('/loaddata', loadData)
+app.use('/listorder', listOrder)
+app.use('/listprod', listProd)
+app.use('/addcart', addCart)
+app.use('/showcart', showCart)
+app.use('/checkout', checkout)
+app.use('/order', order)
+app.use('/createAccount', createAccount)
+app.use('/login', login)
+app.use('/validateLogin', validateLogin)
+app.use('/logout', logout)
+app.use('/admin', admin)
+app.use('/product', product)
+app.use('/displayImage', displayImage)
+app.use('/customer', customer)
+app.use('/ship', ship)
+app.use('/signup', signup)
+app.use('/editAccount', editAccount)
+app.use('/viewOrders', viewOrders)
+app.use(express.static(__dirname + '/public'))
 
 // Handlebar helpers
 let hbs = exphbs.create({});
 
 hbs.handlebars.registerHelper('subtotal', function (price, quantity) {
-    return (quantity * price).toFixed(2);
+    return (quantity * price).toFixed(2)
 })
 
 hbs.handlebars.registerHelper('ordertotal', function (productList) {
@@ -127,7 +134,23 @@ hbs.handlebars.registerHelper('getProductDescriptionLink', function(productId){
 })
 
 hbs.handlebars.registerHelper('displayAdmin', function (session){
-    return session.authenticatedUser
+    return session.isAdmin
+})
+
+hbs.handlebars.registerHelper('selected', function(option, value){
+    if (option === value) {
+        return 'selected';
+    } else {
+        return ''
+    }
+})
+
+hbs.handlebars.registerHelper('selected', function(option, value) {
+    if (option === value) {
+        return 'selected';
+    } else {
+        return ''
+    }
 })
 
 // Starting our Express app

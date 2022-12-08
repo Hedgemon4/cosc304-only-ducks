@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 require('moment');
+const auth = require("../auth");
 
 router.get('/', function (req, res) {
+    if (auth.checkAuthentication(req, res) && auth.checkAdmin(req, res)) {
         (async function () {
             let pool = false
             try {
@@ -23,7 +25,7 @@ router.get('/', function (req, res) {
                     products.push(results2.recordset)
                 }
 
-                res.render('listorder', {order : orders, products : products, title : "OnlyDucks Order List"})
+                res.render('listorder', {order: orders, products: products, title: "OnlyDucks Order List"})
             } catch (err) {
                 console.dir(err);
                 res.end();
@@ -31,6 +33,7 @@ router.get('/', function (req, res) {
                 pool.close()
             }
         })();
+    }
 });
 
 module.exports = router;
