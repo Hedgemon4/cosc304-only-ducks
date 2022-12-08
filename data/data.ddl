@@ -202,9 +202,9 @@ VALUES ('Cool Robot Duck', 1, 'I will be quack.', 27.00, '/images/Ducks/terminat
 INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL)
 VALUES ('Not-So-Cool Robot Duck', 4, 'Really? Tin? What a crappy metal.', 17.00, '/images/Ducks/tinDuck.jpeg');
 INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL)
-VALUES ('The Donald Duck', 3, 'Do not buy this one. Seriously, it sucks.', 40.00, '/images/Ducks/trumpDuck.jpeg');
+VALUES ('The Donald Duck', 3, 'Duck save America', 40.00, '/images/Ducks/trumpDuck.jpeg');
 INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL)
-VALUES ('Oily Duck', 2, 'America! Duck yeah!', 200.00, '/images/Ducks/usaDuck.jpeg');
+VALUES ('Uncle Duck', 2, 'America! Duck yeah!', 200.00, '/images/Ducks/usaDuck.jpeg');
 INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL)
 VALUES ('Sad Mask Duck', 4, 'He is your daddy.', 24.00, '/images/Ducks/vaderDuck.png');
 INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL)
@@ -287,6 +287,10 @@ VALUES ('Elizabeth', 'Elliott', 'engel@uiowa.edu', '555-666-7777', '555 Everwood
         'T8E 1C3', 'Canada', 'beth', 'test');
 INSERT INTO customer (userid, password, isAdmin)
 VALUES ('admin1', 'secure123', 1)
+
+INSERT INTO review (reviewRating, reviewDate, customerId, productId, reviewComment) VALUES (4, '2019-10-15 3:30:22', 1, 1, 'I thought this duck was great!')
+INSERT INTO review (reviewRating, reviewDate, customerId, productId, reviewComment) VALUES (5, '2020-11-02 3:30:22', 2, 1, 'Awesome product!')
+INSERT INTO review (reviewRating, reviewDate, customerId, productId, reviewComment) VALUES (1, '2022-05-16 3:30:22', 3, 1, 'Never received my duck! I do not think this is even a real website...')
 
 -- Order 1 can be shipped as have enough inventory
 DECLARE

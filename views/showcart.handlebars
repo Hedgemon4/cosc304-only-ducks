@@ -32,7 +32,7 @@
                             <td>${{subtotal this.price this.quantity}}</td>
                             <td><a href='\showcart?delete={{this.id}}'>Remove Item from Cart</a></td>
                             <td><input type=button onclick="update({{this.id}}, document.form1.newqty{{this.id}}.value)"
-                                       value="Update Quantity"></td>
+                                     class="btn button-coloured"  value="Update Quantity"></td>
                         </tr>
                     {{/if}}
                 {{/each}}

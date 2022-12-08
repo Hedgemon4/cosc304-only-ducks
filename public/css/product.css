@@ -4,11 +4,30 @@
     align-items: flex-start;
     flex-direction: row;
     width: 100%;
+    margin: 0 0 2rem 0;
+}
+
+.product-flex-row-large-margin{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: row;
+    width: 100%;
+    margin: 0 0 4rem 0;
+}
+
+.product-flex-row-small-margin{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: row;
+    margin: 0 0 1rem 0;
+    width: 100%;
 }
 
 .product-flex-row-buttons{
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
     flex-direction: row;
     width: 100%;
@@ -16,9 +35,29 @@
     margin: 2rem 0 0 0;
 }
 
+.radio-input{
+    transform: scale(2);
+}
+
+.form-check-label{
+    font-size: 1rem;
+    margin: 0 0 0 0.5rem;
+}
+
+.light-text{
+    font-size: 1rem;
+    color: #757575;
+    margin: 0 0 1rem 0;
+}
+
+.review-input{
+    max-width: 100%;
+    margin: 0 0 1rem 0;
+}
+
 .product-flex-row-text{
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: flex-end;
     flex-direction: row;
     width: 100%;
@@ -26,7 +65,7 @@
 
 .product-flex-row-text-top{
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: flex-start;
     flex-direction: row;
     width: 100%;
@@ -48,6 +87,15 @@
     align-items: flex-start;
     flex-direction: column;
     flex-wrap: wrap;
+}
+
+.product-flex-col-half-review{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 70%;
 }
 
 .product-title{
