@@ -10,8 +10,8 @@
             {{/each}}
             <input type="text" name="productName" class="form-control search-bar">
         </select>
-        <input type="submit" class="btn btn-primary" value="Submit">
-        <input type="reset" class="btn btn-primary" value="Reset">
+        <input type="submit" class="btn button-coloured" value="Submit">
+        <input type="reset" class="btn button-coloured" value="Reset">
     </div>
     {{#if name}}
         <h2 class="page-space">Products {{specifyCat}} containing '{{name}}'</h2>
@@ -29,8 +29,8 @@
                                     this.productId}}>{{this.productName}} </a></h5>
                             <h6>${{displaymoney this.productPrice}}</h6>
                             <p class="card-text">{{this.productDesc}}</p>
-                            <p><a href={{getAddToCartLink this.productId this.productName this.productPrice}}
-                                  class="btn btn-primary">Add to Cart</a></p>
+                            <p><a href="{{getAddToCartLink this.productId this.productName this.productPrice}}"
+                                  class="btn btn-primary button-coloured">Add to Cart</a></p>
                         </div>
                     </div>
                 </div>
