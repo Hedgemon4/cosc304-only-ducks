@@ -8,6 +8,75 @@ router.get('/', async function (req, res) {
         id = req.query.id
     }
 
+    let isValid = true
+    let canReview = true
+    let hasBought = true
+
+    console.log(req.session.isValid)
+    console.log(req.session.canReview)
+    console.log(req.session.hasBought)
+
+    if(typeof req.session.isValid !== 'undefined'){
+        isValid = req.session.isValid;
+        req.session.isValid = true
+    }
+    if(typeof req.session.canReview !== 'undefined'){
+        canReview = req.session.canReview
+        req.session.canReview = true
+    }
+    if(typeof req.session.hasBought !== 'undefined'){
+        hasBought = req.session.hasBought;
+        req.session.hasBought = true
+    }
+
+    await (async function () {
+        let pool = false
+        let sqlQuery;
+        try {
+            pool = await sql.connect(dbConfig)
+
+            const ps = new sql.PreparedStatement(pool)
+            ps.input('param', sql.VarChar(40))
+            await ps.prepare("SELECT product.productId, product.productName, product.productPrice, product.productDesc, productImageURL, productImage  FROM product WHERE product.productId = @param")
+            let result = await ps.execute({param: id})
+            let product = result.recordset
+
+            const psReviews = new sql.PreparedStatement(pool)
+            psReviews.input('param', sql.VarChar(40))
+            await psReviews.prepare("SELECT review.reviewId, review.reviewRating, review.reviewDate, review.customerId, review.productId, review.reviewComment, customer.firstName, customer.lastName FROM review JOIN customer ON review.customerId = customer.customerId WHERE review.productId = @param")
+            let reviewsResult = await psReviews.execute({param: id})
+            let reviews = reviewsResult.recordset
+
+            res.render('productDetails', {
+                id: id,
+                product: product,
+                reviews: reviews,
+                isValid: isValid,
+                canReview: canReview,
+                hasBought: hasBought,
+                title: "OnlyDucks Products"
+            })
+
+        } catch (err) {
+            console.dir(err)
+            res.end()
+        } finally {
+            pool.close()
+        }
+
+
+    })()
+})
+
+router.get('/addReview', async function (req, res) {
+    console.log("Hello")
+
+    let id = 0;
+    if (req.query.id) {
+        id = req.query.id
+        console.log(id)
+    }
+
     let isValid = true;
     if (req.query.valid) {
         isValid = req.query.valid
@@ -131,7 +200,6 @@ router.get('/', async function (req, res) {
         }
     }
 
-
     await (async function () {
         let pool = false
         let sqlQuery;
@@ -170,28 +238,18 @@ router.get('/', async function (req, res) {
                     productId: id,
                     reviewComment: comment
                 })
-
-                res.redirect("/product?id=" + id)
-
-            } else {
-                res.render('productDetails', {
-                    id: id,
-                    product: product,
-                    reviews: reviews,
-                    isValid: isValid,
-                    canReview: canReview,
-                    hasBought: hasBought,
-                    title: "OnlyDucks Products"
-                })
             }
         } catch (err) {
             console.dir(err)
             res.end()
         } finally {
             pool.close()
+            req.session.isValid = isValid
+            req.session.canReview = canReview
+            req.session.hasBought = hasBought;
+
+            res.redirect("/product?id=" + id)
         }
-
-
     })()
 })
 
