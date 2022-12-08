@@ -26,39 +26,18 @@ router.get('/', function (req, res) {
                     ps.input("productId", sql.Int)
                     ps.input("wId", sql.Int)
                     ps.input("newInventory", sql.Int)
-                    ps.prepare("UPDATE productInventory SET quantity=@newInventory WHERE productId=@productId AND warehouseId=@wId", (err) => {
-                        if (err) {
-                            console.error(err)
-                            return
-                        }
-                        ps.execute({productId: productId, wId: wId, newInventory: newInventory}, (err, result) => {
-                            if (err) {
-                                console.error(err)
-                                return
-                            }
-                            console.log(result)
-                            ps.unprepare((err) => {
-                                if (err) {
-                                    console.error(err)
-                                }
-                            })
-                        })
-                    })
-
+                    await ps.prepare("UPDATE productInventory SET quantity=@newInventory WHERE productId=@productId AND warehouseId=@wId")
+                    await ps.execute({productId: productId, wId: wId, newInventory: newInventory})
                 }
                 let wQuery = "SELECT warehouseId as wId, warehouseName as wName from warehouse;"
                 let wResults = await pool.request().query(wQuery);
                 let warehouseIds = wResults.recordset
                 let productInfo = []
-                const ps = new sql.PreparedStatement(pool)
                 for (let i = 0; i < warehouseIds.length; i++) {
                     let result = wResults.recordset[i];
-                    //ps.input("warehouseId",sql.Int)
                     let result2 = await pool.request().input('warehouseId', sql.Int, result.wId).query("SELECT p.productId AS productid, product.productName AS productname, p.warehouseId AS warehouseid ,p.quantity AS quantity FROM productInventory AS p JOIN product ON product.productId = p.productId WHERE p.warehouseId = @warehouseId ORDER BY p.productId;")
                     productInfo.push(result2.recordset)
                 }
-                //console.log(productInfo[0])
-                //console.log(warehouseIds)
                 res.render('admin', {
                     dailySales: sales,
                     allCustomers: customers,
