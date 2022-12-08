@@ -190,6 +190,10 @@ INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state
 INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Elizabeth', 'Elliott', 'engel@uiowa.edu', '555-666-7777', '555 Everwood Street', 'Montreal', 'Quebec', 'T8E 1C3', 'Canada', 'beth' , 'test');
 INSERT INTO customer (userid, password, isAdmin) VALUES ('admin1', 'secure123', 1)
 
+INSERT INTO review (reviewRating, reviewDate, customerId, productId, reviewComment) VALUES (4, '2019-10-15 3:30:22', 1, 1, 'I thought this duck was great!')
+INSERT INTO review (reviewRating, reviewDate, customerId, productId, reviewComment) VALUES (5, '2020-11-02 3:30:22', 2, 1, 'Awesome product!')
+INSERT INTO review (reviewRating, reviewDate, customerId, productId, reviewComment) VALUES (1, '2022-05-16 3:30:22', 3, 1, 'Never received my duck! I do not think this is even a real website...')
+
 -- Order 1 can be shipped as have enough inventory
 DECLARE @orderId int
 INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (1, '2019-10-15 10:25:55', 91.70)
